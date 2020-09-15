@@ -6,20 +6,17 @@ import { AiOutlineSearch } from 'react-icons/ai'
 export default function Search(props){
 	const { 
 		onSearch, 
-		proximitySearch, 
-		// useLeaflet, 
 		OpenStreetMapProvider,
-		loadingUser,
 		leaf,
+		mapEl,
+		center, 
+		zoom,
 	} = props
 
 	const ref = useRef(null)
-	const [radiusVal, setRadiusVal] = useState(30)
 	const [searching, setSearching] = useState(false)
 	const [searchInput, setSearchInput] = useState(``)
-	const [location, setLocation] = useState(null)
 	const [results, setResults] = useState(null)
-	// const { map } = useLeaflet()
 	
 	const osmProvider = new OpenStreetMapProvider({
 		params: {
@@ -35,26 +32,7 @@ export default function Search(props){
 		setSearching(false)
 	}, 250), [])
 
-	async function showPosition(position){
-		if(position.coords){
-			const coords = `${position.coords.latitude}, ${position.coords.longitude}`
-			const results = await osmProvider.search({ query: coords })
-			const result = results?.[0]
-
-			if(result){
-				const { label } = result
-				onSearch(result, radiusVal)
-				setSearchInput(label)
-				setLocation(result)
-			}
-		}
-	}
-
 	useEffect(() => {
-		if(typeof window !== `undefined` && proximitySearch){
-			const getCurrentPosition = window?.navigator?.geolocation?.getCurrentPosition
-			getCurrentPosition(showPosition)
-		}
 		if(ref?.current){
 			const disableClickPropagation = leaf?.DomEvent?.disableClickPropagation
 			disableClickPropagation(ref.current)
@@ -63,9 +41,15 @@ export default function Search(props){
   
 	const submitSearch = (loc) => {
 		if(loc) {
-			setLocation(loc)
 			setSearchInput(loc?.label || ``)
-			onSearch(loc, radiusVal)
+			onSearch(loc)
+		}
+	}
+
+	function resetView(){
+		if(center && zoom && mapEl) { 
+			const { leafletElement } = mapEl?.current
+			leafletElement.setView(center, zoom)
 		}
 	}
 
@@ -75,6 +59,7 @@ export default function Search(props){
 			className={`searchContainer`}
 			ref={ref}
 		>
+			<div onClick={resetView} className="reset">Reset</div>
 			<div className="input searchInputContainer">
 				<input 
 					type="text" 
@@ -83,58 +68,30 @@ export default function Search(props){
 						delaySearch(e.target.value)
 					}}
 					value={searchInput}
-					disabled={loadingUser}
-					placeholder={loadingUser ? `Loading user location...` : `Enter your ZIP`} 
+					placeholder={`Enter your ZIP`} 
 				/>
 				<AiOutlineSearch className="searchIcon" />
-			</div>
-      
-			{proximitySearch && <div className="radiusInput">
-				<div className={`label`}>
-          Radius (miles)
-				</div>
-				<div className="input">
-					<input 
-						placeholder="Enter your ZIP" 
-						type="number" 
-						className="radius" 
-						value={radiusVal}
-						onChange={e => {          
-							setRadiusVal(e.target.value)
-						}}
-					/>
-					<button
-						onClick={() => {
-							if(location) {
-								onSearch(location, radiusVal)
-							}
-						}}
-					>
-						<div className="checkmark" />
-					</button>
-				</div>
-			</div>}
 
-			<div className="resultContainer">
-				{(!!results?.length && !searching) && (
-					<ul className="resultList">
-						{results.map((result, i) => {
-							const { label } = result
-							return (
-								<li 
-									onClick={() => {
-										setLocation(result)
-										submitSearch(result)
-										setResults(null)
-									}} 
-									key={i}
-								>
-									{label}
-								</li>
-							)
-						})}
-					</ul>
-				)}
+				<div className="resultContainer">
+					{(!!results?.length && !searching) && (
+						<ul className="resultList">
+							{results.map((result, i) => {
+								const { label } = result
+								return (
+									<li 
+										onClick={() => {
+											submitSearch(result)
+											setResults(null)
+										}} 
+										key={i}
+									>
+										{label}
+									</li>
+								)
+							})}
+						</ul>
+					)}
+				</div>
 			</div>
 		</div>
 	)
@@ -148,31 +105,34 @@ const styles = css`
 		width: 100%;
 		max-width: 600px;
 		position: relative;
+		box-shadow: 0px 5px 3px #999;
+		z-index: 2000;
+		padding: 20px;
 		input {
 			border: none;
 			border-bottom: 2px solid #999;
 			font-size: 32px;
-			padding: 10px 0;
+			padding: 0;
 			width: 100%;
+			height: 60px;
 		}
 		.searchIcon {
 			width: 32px;
 			height: 32px;
 			position: absolute;
-			right: 0;
+			right: 20px;
 			top: 50%;
 			transform: translateY(-50%);
 			color: #999;
 		}
 	}
-  > div {
-    margin: 5px;
-  }
   .resultContainer {
-    flex: 1 0 100%;
+    position: absolute;
+		left: 0;
+		top: 90px;
+		width: 100%;
   }
   .resultList {
-    max-width: 320px;
     list-style: none;
     margin: 0;
     padding: 10px;

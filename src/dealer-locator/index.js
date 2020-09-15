@@ -7,6 +7,7 @@ import 'react-leaflet-markercluster/dist/styles.min.css'
 
 import Search from './Search'
 import LocatorList from './LocatorList'
+import CurrentLocation from './CurrentLocation'
 
 const markers = [
 	{ 
@@ -47,13 +48,12 @@ const markers = [
 ]
 
 export default function MapLocator(props) {
-	const { proximitySearch } = props
+	const { center, zoom, maxZoom } = props
 	const mapEl = useRef(null)
 	const [leaflet, setLeaflet] = useState({})
 	const [visibleLocations, setVisibleLocations] = useState([])
-	const [proxMarkers, setProxMarkers] = useState(null)
-	const [loadingUser, setLoadingUser] = useState(proximitySearch)
-  
+	const [locations, setLocations] = useState(null)
+	
 	const {
 		Map,
 		TileLayer,
@@ -61,9 +61,6 @@ export default function MapLocator(props) {
 		Popup,
 		MarkerClusterGroup,
 		icon,
-		latLngBounds,
-		initBounds,
-		useLeaflet,
 		OpenStreetMapProvider,
 		leaf,
 	} = leaflet
@@ -80,7 +77,6 @@ export default function MapLocator(props) {
 					TileLayer,
 					Marker,
 					Popup,
-					useLeaflet,
 				} = await import(`react-leaflet`)
 
 				const {
@@ -89,11 +85,11 @@ export default function MapLocator(props) {
 
 				const { OpenStreetMapProvider } = await import(`leaflet-geosearch`)
 
-				const initBounds = L.latLngBounds()
-				markers.forEach(m => {
-					const { lat, lng } = m
-					initBounds.extend([lat, lng])
-				})
+				// const initBounds = L.latLngBounds()
+				// markers.forEach(m => {
+				// 	const { lat, lng } = m
+				// 	initBounds.extend([lat, lng])
+				// })
 
 				setLeaflet({
 					Map,
@@ -102,9 +98,7 @@ export default function MapLocator(props) {
 					Popup,
 					MarkerClusterGroup,
 					icon,
-					latLngBounds: L.latLngBounds,
-					initBounds,
-					useLeaflet,
+					// initBounds,
 					OpenStreetMapProvider,
 					leaf: L,
 				})
@@ -121,71 +115,57 @@ export default function MapLocator(props) {
 		}, 10)
 	}, [])
 
-	// for proximity search updating prox markers and setting map
-	useEffect(() => {
-		if(mapEl?.current?.leafletElement){
-			if(latLngBounds && proxMarkers){
-				const bounds = latLngBounds()
-				proxMarkers.forEach(m => {
-					const { lat, lng } = m
-					bounds.extend([lat, lng])
-				})
-				if(proximitySearch) setLoadingUser(false)
-
-				if(bounds && mapEl) { 
-					const { leafletElement } = mapEl?.current
-					leafletElement.flyToBounds(bounds)
-				}
-			} 
-		}
-	}, [latLngBounds, proxMarkers, proximitySearch])
-  
-
 	// keeps track of visible locations in the current bounds
 	const handleMove = () => {
-		const locations = []
-		if(mapEl?.current){
-			const mapBounds = mapEl?.current?.leafletElement?.getBounds()
-			// const dealers = proximitySearch ? proxMarkers || [] : markers
+		if(locations){
+			const foundLocations = []
+			if(mapEl?.current){
+				const mapBounds = mapEl?.current?.leafletElement?.getBounds()
       
-			markers.forEach(marker => {
-				const { lat, lng } = marker
-				if(mapBounds?.contains([lat, lng])){
-					locations.push(marker)
-				}
-			})
-		}
+				locations.forEach(location => {
+					const { lat, lng } = location
+					if(mapBounds?.contains([lat, lng])){
+						foundLocations.push(location)
+					}
+				})
+			}
     
-		setVisibleLocations(locations)
+			setVisibleLocations(foundLocations)
+		}
 	}
 
 	// handles search functionality and updating the map location
-	async function handleSearch(location, radius = 30) {
+	async function handleSearch(location) {
 		if(location){
-			const { raw: { address }, bounds } = location
-			console.log(`Address: `, address) 
-			// const { state, city } = address
+			const { bounds } = location
+			const [bottomLeft, topRight] = bounds
 
-			// if(proximitySearch){ 
-			// 	const dealers = await getDealers(city, state, radius)
-			// 	const allDealers = [...dealers.local || [], ...dealers.retail || []]
-			// 	setProxMarkers(allDealers)
-			// } else {
+			const [maxLat, maxLng] = topRight
+			const [minLat, minLng] = bottomLeft
+
+			const locationsInBounds = markers.filter(({ lat, lng }) => (
+				(lat >= minLat) &&
+				(lat <= maxLat) &&
+				(lng >= minLng) &&
+				(lng <= maxLng)
+			))
+
+			setLocations(locationsInBounds)
+			
 			if(bounds && mapEl) { 
 				const { leafletElement } = mapEl?.current
-				leafletElement.flyToBounds(bounds)
+				leafletElement.fitBounds([bottomLeft, topRight])
 			}
-			// }
 		}
 	}
-  
-	const locations = proximitySearch ? proxMarkers : markers
 
 	if(!Map) {
 		return (
 			<div className="loading">Loading...</div>
 		)
 	}
+
+	console.log(`Locations: `, locations)
 
 	return (
 		<>
@@ -194,24 +174,24 @@ export default function MapLocator(props) {
 			/>
 			<Search
 				onSearch={handleSearch}
-				proximitySearch={proximitySearch}
-				useLeaflet={useLeaflet}
 				OpenStreetMapProvider={OpenStreetMapProvider}
-				loadingUser={loadingUser}
 				leaf={leaf}
+				mapEl={mapEl}
+				center={center || [40.2502757,-85.9485402]}
+				zoom={zoom || 5}
 			/>
 			<div css={styles.mapContainer} className="locatorContainer">
-				<LocatorList locations={locations} />
 				<Map
-					bounds={initBounds}
-					maxZoom={30}
+					center={center || [40.2502757,-85.9485402]}
+					zoom={zoom || 5}
+					maxZoom={maxZoom || 30}
 					css={styles.map}
 					onMoveend={handleMove}
 					ref={mapEl}
 				>
 					<TileLayer 
 						attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-						url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+						url='https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
 					/>
 					{locations && (
 						<MarkerClusterGroup>
@@ -229,6 +209,9 @@ export default function MapLocator(props) {
 					)}
 				</Map>
 			</div>
+			<CurrentLocation mapEl={mapEl} />
+			<LocatorList locations={visibleLocations} />
+
 		</>
 	)
 }
@@ -240,7 +223,7 @@ const styles = {
     } 
 	`,
 	map: css`
-    height: 100vh;
+    height: 60vh;
 		width: 100%;
 		.leaflet-control-container {
 			user-select: none;

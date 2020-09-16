@@ -14,35 +14,35 @@ const markers = [
 		name: `test1`, 
 		lat: 37.9716, 
 		lng: -87.5711, 
-		hours: `6:00am - 8:00pm`, 
+		hours: `8:00pm`, 
 		phone: `123-123-1234`,
 	},
 	{ 
 		name: `test2`, 
 		lat: 37.8716, 
 		lng: -87.5711,
-		hours: `6:00am - 8:00pm`, 
+		hours: `8:00pm`, 
 		phone: `123-123-1234`,
 	},
 	{ 
 		name: `test3`, 
 		lat: 37.7716, 
 		lng: -87.5711,
-		hours: `6:00am - 8:00pm`, 
+		hours: `8:00pm`, 
 		phone: `123-123-1234`,
 	},
 	{ 
 		name: `test4`, 
 		lat: 37.6716, 
 		lng: -87.5711,
-		hours: `6:00am - 8:00pm`, 
+		hours: `8:00pm`, 
 		phone: `123-123-1234`,
 	},
 	{ 
 		name: `test5`, 
 		lat: 37.5716, 
 		lng: -87.5711,
-		hours: `6:00am - 8:00pm`, 
+		hours: `8:00pm`, 
 		phone: `123-123-1234`,
 	},
 ]
@@ -53,6 +53,7 @@ export default function MapLocator(props) {
 	const [leaflet, setLeaflet] = useState({})
 	const [visibleLocations, setVisibleLocations] = useState([])
 	const [locations, setLocations] = useState(null)
+	const [currentLocation, setCurrentLocation] = useState(null)
 	
 	const {
 		Map,
@@ -115,13 +116,21 @@ export default function MapLocator(props) {
 		}, 10)
 	}, [])
 
+	useEffect(() => {
+		// search was not setting locations before handleMove() was
+		// getting called. This is to make sure the most current locations
+		// are visisble in the locator list
+		handleMove()
+	}, [locations])
+
 	// keeps track of visible locations in the current bounds
 	const handleMove = () => {
-		if(locations){
-			const foundLocations = []
-			if(mapEl?.current){
-				const mapBounds = mapEl?.current?.leafletElement?.getBounds()
-      
+		console.log(`Handle Move: `, locations)
+		const foundLocations = []
+		if(mapEl?.current){
+			const mapBounds = mapEl?.current?.leafletElement?.getBounds()
+			
+			if(locations) {
 				locations.forEach(location => {
 					const { lat, lng } = location
 					if(mapBounds?.contains([lat, lng])){
@@ -129,31 +138,39 @@ export default function MapLocator(props) {
 					}
 				})
 			}
-    
-			setVisibleLocations(foundLocations)
 		}
+    
+		setVisibleLocations(foundLocations)
 	}
 
 	// handles search functionality and updating the map location
-	async function handleSearch(location) {
+	async function handleSearch(location) {	
 		if(location){
-			const { bounds } = location
+			const { bounds, x, y } = location
 			const [bottomLeft, topRight] = bounds
 
 			const [maxLat, maxLng] = topRight
 			const [minLat, minLng] = bottomLeft
 
-			const locationsInBounds = markers.filter(({ lat, lng }) => (
-				(lat >= minLat) &&
-				(lat <= maxLat) &&
-				(lng >= minLng) &&
-				(lng <= maxLng)
-			))
+			const searchCenter = [y, x]
+			const leafletElement = mapEl?.current?.leafletElement
+
+			const locationsInBounds = markers
+				.filter(({ lat, lng }) => (
+					(lat >= minLat) &&
+					(lat <= maxLat) &&
+					(lng >= minLng) &&
+					(lng <= maxLng)
+				))
+				.map(marker => {
+					const markerCenter = [marker.lat, marker.lng]
+					const distance = (leafletElement?.distance(markerCenter, searchCenter)) * 0.00062137
+					return { ...marker, distance }
+				})
 
 			setLocations(locationsInBounds)
 			
-			if(bounds && mapEl) { 
-				const { leafletElement } = mapEl?.current
+			if(bounds && leafletElement) { 
 				leafletElement.fitBounds([bottomLeft, topRight])
 			}
 		}
@@ -164,8 +181,6 @@ export default function MapLocator(props) {
 			<div className="loading">Loading...</div>
 		)
 	}
-
-	console.log(`Locations: `, locations)
 
 	return (
 		<>
@@ -209,9 +224,8 @@ export default function MapLocator(props) {
 					)}
 				</Map>
 			</div>
-			<CurrentLocation mapEl={mapEl} />
-			<LocatorList locations={visibleLocations} />
-
+			<CurrentLocation mapEl={mapEl} setCurrentLocation={setCurrentLocation} />
+			<LocatorList locations={markers} currentLocation={currentLocation} />
 		</>
 	)
 }

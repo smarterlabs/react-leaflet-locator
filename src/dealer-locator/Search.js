@@ -8,9 +8,10 @@ export default function Search(props){
 		onSearch, 
 		OpenStreetMapProvider,
 		leaf,
-		mapEl,
-		center, 
-		zoom,
+		// mapEl,
+		// center, 
+		// zoom,
+		setFilterModal,
 	} = props
 
 	const ref = useRef(null)
@@ -46,12 +47,12 @@ export default function Search(props){
 		}
 	}
 
-	function resetView(){
-		if(center && zoom && mapEl) { 
-			const { leafletElement } = mapEl?.current
-			leafletElement.setView(center, zoom)
-		}
-	}
+	// function resetView(){
+	// 	if(center && zoom && mapEl) { 
+	// 		const { leafletElement } = mapEl?.current
+	// 		leafletElement.setView(center, zoom)
+	// 	}
+	// }
 
 	return (
 		<div 
@@ -59,7 +60,7 @@ export default function Search(props){
 			className={`searchContainer`}
 			ref={ref}
 		>
-			<div onClick={resetView} className="reset">Reset</div>
+			{/* <div onClick={resetView} className="reset">Reset</div> */}
 			<div className="input searchInputContainer">
 				<input 
 					type="text" 
@@ -71,7 +72,6 @@ export default function Search(props){
 					placeholder={`Enter your ZIP`} 
 				/>
 				<AiOutlineSearch className="searchIcon" />
-
 				<div className="resultContainer">
 					{(!!results?.length && !searching) && (
 						<ul className="resultList">
@@ -93,34 +93,42 @@ export default function Search(props){
 					)}
 				</div>
 			</div>
+			<div className="filter" onClick={() => setFilterModal(true)}>
+					Filter
+			</div>
 		</div>
 	)
 }
 
 const styles = css`
   display: flex;
-  flex-flow: row wrap;
-	justify-content: center;
+  flex-flow: row nowrap;
+	align-items: center;
+	box-shadow: 0px 5px 3px #999;
+	z-index: 2000;
+  position: relative;
+	padding: 15px;
+	.filter {
+		cursor: pointer;
+	}
 	.searchInputContainer {
-		width: 100%;
+		flex: 1;
 		max-width: 600px;
 		position: relative;
-		box-shadow: 0px 5px 3px #999;
-		z-index: 2000;
-		padding: 20px;
+		margin-right: 20px;
 		input {
 			border: none;
 			border-bottom: 2px solid #999;
-			font-size: 32px;
+			font-size: 20px;
 			padding: 0;
 			width: 100%;
-			height: 60px;
+			height: 40px;
 		}
 		.searchIcon {
-			width: 32px;
-			height: 32px;
+			width: 24px;
+			height: 24px;
 			position: absolute;
-			right: 20px;
+			right: 0px;
 			top: 50%;
 			transform: translateY(-50%);
 			color: #999;

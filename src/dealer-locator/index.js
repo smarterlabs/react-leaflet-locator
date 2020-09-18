@@ -5,9 +5,12 @@ import 'leaflet-geosearch/assets/css/leaflet.css'
 import 'leaflet/dist/leaflet.css'
 import 'react-leaflet-markercluster/dist/styles.min.css'
 
+import StyleContext from '../context/StyleContext'
 import Search from './Search'
 import LocatorList from './LocatorList'
 import CurrentLocation from './CurrentLocation'
+import FilterModal from './FilterModal'
+
 
 const markers = [
 	{ 
@@ -16,6 +19,8 @@ const markers = [
 		lng: -87.5711, 
 		hours: `8:00pm`, 
 		phone: `123-123-1234`,
+		categories: [`category a`, `category b`],
+		products: [`product a`, `product b`],
 	},
 	{ 
 		name: `test2`, 
@@ -23,6 +28,8 @@ const markers = [
 		lng: -87.5711,
 		hours: `8:00pm`, 
 		phone: `123-123-1234`,
+		categories: [`category e`, `category d`],
+		products: [`product c`],
 	},
 	{ 
 		name: `test3`, 
@@ -30,6 +37,8 @@ const markers = [
 		lng: -87.5711,
 		hours: `8:00pm`, 
 		phone: `123-123-1234`,
+		categories: [`category c`],
+		products: [`product a`],
 	},
 	{ 
 		name: `test4`, 
@@ -37,6 +46,8 @@ const markers = [
 		lng: -87.5711,
 		hours: `8:00pm`, 
 		phone: `123-123-1234`,
+		categories: [`category e`],
+		products: [`product a`, `product d`],
 	},
 	{ 
 		name: `test5`, 
@@ -44,16 +55,19 @@ const markers = [
 		lng: -87.5711,
 		hours: `8:00pm`, 
 		phone: `123-123-1234`,
+		categories: [`category a`, `category d`],
+		products: [`product c`, `product b`],
 	},
 ]
 
 export default function MapLocator(props) {
-	const { center, zoom, maxZoom } = props
+	const { center, zoom, maxZoom, primaryColor = `#003CA6` } = props
 	const mapEl = useRef(null)
 	const [leaflet, setLeaflet] = useState({})
 	const [visibleLocations, setVisibleLocations] = useState([])
 	const [locations, setLocations] = useState(null)
 	const [currentLocation, setCurrentLocation] = useState(null)
+	const [filterModal, setFilterModal] = useState(true)
 	
 	const {
 		Map,
@@ -125,7 +139,6 @@ export default function MapLocator(props) {
 
 	// keeps track of visible locations in the current bounds
 	const handleMove = () => {
-		console.log(`Handle Move: `, locations)
 		const foundLocations = []
 		if(mapEl?.current){
 			const mapBounds = mapEl?.current?.leafletElement?.getBounds()
@@ -183,54 +196,71 @@ export default function MapLocator(props) {
 	}
 
 	return (
-		<>
-			<Global 
-				styles={styles.global}
-			/>
-			<Search
-				onSearch={handleSearch}
-				OpenStreetMapProvider={OpenStreetMapProvider}
-				leaf={leaf}
-				mapEl={mapEl}
-				center={center || [40.2502757,-85.9485402]}
-				zoom={zoom || 5}
-			/>
-			<div css={styles.mapContainer} className="locatorContainer">
-				<Map
+		<StyleContext.Provider value={{ primaryColor }}>
+			<main css={styles.locatorContainer} className="locatorContainer">
+				<Global 
+					styles={styles.global}
+				/>
+				<Search
+					onSearch={handleSearch}
+					OpenStreetMapProvider={OpenStreetMapProvider}
+					leaf={leaf}
+					mapEl={mapEl}
 					center={center || [40.2502757,-85.9485402]}
 					zoom={zoom || 5}
-					maxZoom={maxZoom || 30}
-					css={styles.map}
-					onMoveend={handleMove}
-					ref={mapEl}
-				>
-					<TileLayer 
-						attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-						url='https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
+					setFilterModal={setFilterModal}
+				/>
+				<div css={styles.mapContainer} className="mapContainer">
+					<Map
+						center={center || [40.2502757,-85.9485402]}
+						zoom={zoom || 5}
+						maxZoom={maxZoom || 30}
+						css={styles.map}
+						onMoveend={handleMove}
+						ref={mapEl}
+						scrollWheelZoom={false}
+					>
+						<TileLayer 
+							attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+							url='https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
+						/>
+						{locations && (
+							<MarkerClusterGroup>
+								{locations.map((m, i) => {
+									const { lat, lng, name } = m
+									return (
+										<Marker key={i} icon={icon} position={[lat, lng]}>
+											<Popup>
+												<div>{name}</div>
+											</Popup>
+										</Marker>
+									)
+								})}
+							</MarkerClusterGroup>
+						)}
+					</Map>
+				</div>
+				<CurrentLocation 
+					mapEl={mapEl} 
+					setCurrentLocation={setCurrentLocation} 
+				/>
+				<LocatorList locations={visibleLocations} currentLocation={currentLocation} />
+				{(filterModal && !!visibleLocations.length) && (
+					<FilterModal 
+						setFilterModal={setFilterModal}
+						locations={visibleLocations} 
+						setVisibleLocations={setVisibleLocations}
 					/>
-					{locations && (
-						<MarkerClusterGroup>
-							{locations.map((m, i) => {
-								const { lat, lng, name } = m
-								return (
-									<Marker key={i} icon={icon} position={[lat, lng]}>
-										<Popup>
-											<div>{name}</div>
-										</Popup>
-									</Marker>
-								)
-							})}
-						</MarkerClusterGroup>
-					)}
-				</Map>
-			</div>
-			<CurrentLocation mapEl={mapEl} setCurrentLocation={setCurrentLocation} />
-			<LocatorList locations={markers} currentLocation={currentLocation} />
-		</>
+				)}
+			</main>
+		</StyleContext.Provider>
 	)
 }
 
 const styles = {
+	locatorContainer: css`
+		position: relative;
+	`,
 	global: css`
     body {
       margin: 0;

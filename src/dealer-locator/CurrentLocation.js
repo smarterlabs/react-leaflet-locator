@@ -1,7 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { BiCurrentLocation } from 'react-icons/bi'
+import { css } from '@emotion/core'
+
+import StyleContext from '../context/StyleContext'
 
 export default function CurrentLocation(props) {
 	const { mapEl, setCurrentLocation } = props
+
+	const { primaryColor } = useContext(StyleContext)
 
 	function showPosition(position){
 		if(position.coords){
@@ -24,8 +30,28 @@ export default function CurrentLocation(props) {
 	}
 
 	return (
-		<div onClick={useLocalLocation}>
-      use my current location
+		<div css={styles({ primaryColor })} onClick={useLocalLocation} className="currentLocation">
+			<BiCurrentLocation className="currentLocationIcon" />
+			<div className="currentLocationText">
+				use my current location
+			</div>
 		</div>
 	)
 }
+
+const styles = props => css`
+	cursor: pointer;
+	.currentLocationIcon {
+		background: ${props.primaryColor};
+		color: #fff;
+		height: 50px;
+		width: 50px;
+		border-radius: 50%;
+		padding: 5px;
+		box-shadow: 0px 5px 5px #666;
+		margin: 20px 0 10px 0;
+	}
+	.currentLocationText {
+		color: #999;
+	}
+`

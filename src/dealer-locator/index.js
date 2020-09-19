@@ -10,6 +10,7 @@ import Search from './Search'
 import LocatorList from './LocatorList'
 import CurrentLocation from './CurrentLocation'
 import FilterModal from './FilterModal'
+import DealerPane from './DealerPane'
 
 
 const markers = [
@@ -21,6 +22,18 @@ const markers = [
 		phone: `123-123-1234`,
 		categories: [`category a`, `category b`],
 		products: [`product a`, `product b`],
+		images: [
+			`https://via.placeholder.com/800/FFFF00/000000?Text=Image+1`,
+			`https://via.placeholder.com/800/E5CCAA/000000?Text=Image+2`,
+			`https://via.placeholder.com/800/333FFF/000000?Text=Image+3`,
+		],
+		email: `test1@test.com`,
+		description: `here is description for test 1`,
+		video: `https://youtu.be/eYiodrKoGTc`,
+		address: `3655 Hwy 62 W`,
+		city: `Boonville`,
+		state: `IN`,
+		zip: `47601`,
 	},
 	{ 
 		name: `test2`, 
@@ -30,6 +43,18 @@ const markers = [
 		phone: `123-123-1234`,
 		categories: [`category e`, `category d`],
 		products: [`product c`],
+		images: [
+			`https://via.placeholder.com/800/E5CCAA/333?Text=Image+1`,
+			`https://via.placeholder.com/800/E5CCAA/333?Text=Image+2`,
+			`https://via.placeholder.com/800/E5CCAA/333?Text=Image+3`,
+		],
+		email: `test2@test.com`,
+		description: `here is description for test 2`,
+		video: `https://youtu.be/eYiodrKoGTc`,
+		address: `3655 Hwy 62 W`,
+		city: `Boonville`,
+		state: `IN`,
+		zip: `47601`,
 	},
 	{ 
 		name: `test3`, 
@@ -39,6 +64,18 @@ const markers = [
 		phone: `123-123-1234`,
 		categories: [`category c`],
 		products: [`product a`],
+		images: [
+			`https://via.placeholder.com/800/E5CCAA/333?Text=Image+1`,
+			`https://via.placeholder.com/800/E5CCAA/333?Text=Image+2`,
+			`https://via.placeholder.com/800/E5CCAA/333?Text=Image+3`,
+		],
+		email: `test3@test.com`,
+		description: `here is description for test 3`,
+		video: `https://youtu.be/eYiodrKoGTc`,
+		address: `3655 Hwy 62 W`,
+		city: `Boonville`,
+		state: `IN`,
+		zip: `47601`,
 	},
 	{ 
 		name: `test4`, 
@@ -48,6 +85,18 @@ const markers = [
 		phone: `123-123-1234`,
 		categories: [`category e`],
 		products: [`product a`, `product d`],
+		images: [
+			`https://via.placeholder.com/800/E5CCAA/000000?Text=Image+1`,
+			`https://via.placeholder.com/800/E5CCAA/000000?Text=Image+2`,
+			`https://via.placeholder.com/800/E5CCAA/000000?Text=Image+3`,
+		],
+		email: `test4@test.com`,
+		description: `here is description for test 4`,
+		video: `https://youtu.be/eYiodrKoGTc`,
+		address: `3655 Hwy 62 W`,
+		city: `Boonville`,
+		state: `IN`,
+		zip: `47601`,
 	},
 	{ 
 		name: `test5`, 
@@ -57,6 +106,18 @@ const markers = [
 		phone: `123-123-1234`,
 		categories: [`category a`, `category d`],
 		products: [`product c`, `product b`],
+		images: [
+			`https://via.placeholder.com/800/E5CCAA/333?Text=Image+1`,
+			`https://via.placeholder.com/800/E5CCAA/333?Text=Image+2`,
+			`https://via.placeholder.com/800/E5CCAA/333?Text=Image+3`,
+		],
+		email: `test5@test.com`,
+		description: `here is description for test 5`,
+		video: `https://youtu.be/eYiodrKoGTc`,
+		address: `3655 Hwy 62 W`,
+		city: `Boonville`,
+		state: `IN`,
+		zip: `47601`,
 	},
 ]
 
@@ -67,7 +128,8 @@ export default function MapLocator(props) {
 	const [visibleLocations, setVisibleLocations] = useState([])
 	const [locations, setLocations] = useState(null)
 	const [currentLocation, setCurrentLocation] = useState(null)
-	const [filterModal, setFilterModal] = useState(true)
+	const [filterModal, setFilterModal] = useState(false)
+	const [curLocationIdx, setCurLocationIdx] = useState(null)
 	
 	const {
 		Map,
@@ -178,7 +240,7 @@ export default function MapLocator(props) {
 				.map(marker => {
 					const markerCenter = [marker.lat, marker.lng]
 					const distance = (leafletElement?.distance(markerCenter, searchCenter)) * 0.00062137
-					return { ...marker, distance }
+					return { ...marker, distance: distance.toFixed(1) }
 				})
 
 			setLocations(locationsInBounds)
@@ -244,12 +306,24 @@ export default function MapLocator(props) {
 					mapEl={mapEl} 
 					setCurrentLocation={setCurrentLocation} 
 				/>
-				<LocatorList locations={visibleLocations} currentLocation={currentLocation} />
+				<LocatorList 
+					locations={visibleLocations} 
+					currentLocation={currentLocation}
+					setCurLocationIdx={setCurLocationIdx} 
+				/>
 				{(filterModal && !!visibleLocations.length) && (
 					<FilterModal 
 						setFilterModal={setFilterModal}
 						locations={visibleLocations} 
 						setVisibleLocations={setVisibleLocations}
+					/>
+				)}
+				{visibleLocations?.[curLocationIdx] && (
+					<DealerPane 
+						location={visibleLocations[curLocationIdx]}
+						curLocationIdx={curLocationIdx}
+						setCurLocationIdx={setCurLocationIdx}
+						totalLocations={visibleLocations.length}
 					/>
 				)}
 			</main>

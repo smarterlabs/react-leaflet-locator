@@ -1,3 +1,6 @@
 {
-	"extends": "@escaladesports/eslint-config"
+	"extends": "@escaladesports/eslint-config",
+	"rules": {
+		"react-hooks/exhaustive-deps": "off"
+	}
 }

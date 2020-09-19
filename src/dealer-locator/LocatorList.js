@@ -4,7 +4,11 @@ import { FaMapMarkerAlt, FaPhone, FaInfoCircle } from 'react-icons/fa'
 
 
 export default function LocatorList(props) {
-	const { locations, currentLocation } = props
+	const { 
+		locations, 
+		currentLocation, 
+		setCurLocationIdx, 
+	} = props
 
 	const origin = currentLocation 
 		? `&origin=${currentLocation.latitude},${currentLocation.longitude}` 
@@ -21,7 +25,7 @@ export default function LocatorList(props) {
 						return (
 							<li className="locatorItem" key={i}>
 								<div className="display">
-									<div className="title">{name}</div>
+									<div onClick={() => setCurLocationIdx(i)} className="title">{name}</div>
 									<div className="distance">{distance || 1.3} mi</div>
 									<span className="bulletPoint">&bull;</span>
 									<div className="hours">Open until {hours}</div>
@@ -62,6 +66,7 @@ const styles = css`
 		font-size: 16px;
 		font-weight: bold;
 		text-transform: capitalize;
+		cursor: pointer;
 	}
 	.locatorItem {
 		display: flex;

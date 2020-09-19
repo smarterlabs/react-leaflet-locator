@@ -104,6 +104,7 @@ const styles = css`
   display: flex;
   flex-flow: row nowrap;
 	align-items: center;
+	justify-content: center;
 	box-shadow: 0px 5px 3px #999;
 	z-index: 2000;
   position: relative;

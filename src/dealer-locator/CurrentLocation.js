@@ -30,8 +30,8 @@ export default function CurrentLocation(props) {
 	}
 
 	return (
-		<div css={styles({ primaryColor })} onClick={useLocalLocation} className="currentLocation">
-			<BiCurrentLocation className="currentLocationIcon" />
+		<div css={styles({ primaryColor })}  className="currentLocation">
+			<BiCurrentLocation onClick={useLocalLocation} className="currentLocationIcon" />
 			<div className="currentLocationText">
 				use my current location
 			</div>

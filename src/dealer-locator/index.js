@@ -129,6 +129,7 @@ export default function MapLocator(props) {
 	const [leaflet, setLeaflet] = useState({})
 	const [visibleLocations, setVisibleLocations] = useState([])
 	const [locations, setLocations] = useState(null)
+	const [filteredLocations, setFilteredLocations] = useState(null)
 	const [currentLocation, setCurrentLocation] = useState(null)
 	const [filterModal, setFilterModal] = useState(false)
 	const [curLocationIdx, setCurLocationIdx] = useState(null)
@@ -200,6 +201,15 @@ export default function MapLocator(props) {
 		// are visisble in the locator list
 		handleMove()
 	}, [locations])
+
+	useEffect(() => {
+		// checks to see to make sure the filteredLocations are still
+		// on the visisble map window
+		if(filteredLocations){
+			const exist = filteredLocations.filter(f => !!visibleLocations.find(v => v.name === f.name))
+			setFilteredLocations(exist.length > 0 ? exist : null)
+		}
+	}, [visibleLocations])
 
 	// keeps track of visible locations in the current bounds
 	const handleMove = () => {
@@ -309,23 +319,25 @@ export default function MapLocator(props) {
 					setCurrentLocation={setCurrentLocation} 
 				/>
 				<LocatorList 
-					locations={visibleLocations} 
+					locations={filteredLocations || visibleLocations} 
 					currentLocation={currentLocation}
 					setCurLocationIdx={setCurLocationIdx} 
 				/>
-				{(filterModal && !!visibleLocations.length) && (
-					<FilterModal 
-						setFilterModal={setFilterModal}
-						locations={visibleLocations} 
-						setVisibleLocations={setVisibleLocations}
-					/>
-				)}
+				<FilterModal 
+					active={filterModal && !!visibleLocations.length}
+					setFilterModal={setFilterModal}
+					locations={visibleLocations} 
+					setFilteredLocations={setFilteredLocations}
+				/>
 				{visibleLocations?.[curLocationIdx] && (
-					<DealerPane 
+					<DealerPane
 						location={visibleLocations[curLocationIdx]}
 						curLocationIdx={curLocationIdx}
 						setCurLocationIdx={setCurLocationIdx}
-						totalLocations={visibleLocations.length}
+						totalLocations={filteredLocations 
+							? filteredLocations.length 
+							: visibleLocations.length
+						}
 					/>
 				)}
 			</main>

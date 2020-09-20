@@ -5,7 +5,12 @@ import { MdClose, MdPlaylistAdd, MdDone } from 'react-icons/md'
 import StyleContext from '../context/StyleContext'
 
 export default function FilterModal(props){
-	const { locations, setFilterModal, setVisibleLocations } = props
+	const { 
+		locations, 
+		setFilterModal, 
+		setFilteredLocations,
+		active, 
+	} = props
 
 	const { primaryColor } = useContext(StyleContext)
 	const [activeFilters, setActiveFilters] = useState({})
@@ -62,13 +67,14 @@ export default function FilterModal(props){
 			return included
 		})  
     
-		setVisibleLocations(filteredLocations)
+		setFilteredLocations(filteredLocations.length > 0 ? filteredLocations : null)
+		setFilterModal(false)
 	}
     
 	return (
 		<>
-			<Global styles={global}/>
-			<div css={() => styles({ primaryColor })} className="filterModal">
+			{active && <Global styles={global}/>}
+			<div css={() => styles({ primaryColor, active })} className="filterModal">
 				<div className="filterModalInner">
 					<div className="close" onClick={() => setFilterModal(false)}>
 						<MdClose className="closeIcon" />
@@ -139,6 +145,7 @@ const styles = props => css`
   height: 100%;
   background: #fff;
   overflow: auto;
+	display: ${props.active ? `block` : `none`};
   .close {
     text-align: right;
     cursor: pointer;

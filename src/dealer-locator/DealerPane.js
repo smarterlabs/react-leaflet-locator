@@ -69,12 +69,16 @@ export default function DealerPane(props) {
 			<Global styles={global}/>
 			<section css={() => styles(globalStyles)} className="dealerPaneContainer">
 				<div className="dealerSelect">
-					<div onClick={prev} className="previous">
-						{`< `}Previous
-					</div>
-					<div onClick={next} className="next">
-          Next{ ` >`}
-					</div>
+					{totalLocations > 1 && (
+						<>
+							<div onClick={prev} className="previous">
+								{`< `}Previous
+							</div>
+							<div onClick={next} className="next">
+                Next{ ` >`}
+							</div>	
+						</>
+					)}
 					<div className="close" onClick={() => setCurLocationIdx(null)}>
 						<MdClose className="closeIcon" />
 					</div>

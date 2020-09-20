@@ -67,118 +67,120 @@ export default function DealerPane(props) {
 	return (
 		<>
 			<Global styles={global}/>
-			<section css={() => styles(globalStyles)} className="dealerPaneContainer">
-				<div className="dealerSelect">
-					{totalLocations > 1 && (
-						<>
-							<div onClick={prev} className="previous">
-								{`< `}Previous
-							</div>
-							<div onClick={next} className="next">
+			<section css={styles(globalStyles)} className="dealerPaneContainer">
+				<div className="inner">
+					<div className="dealerSelect">
+						{totalLocations > 1 && (
+							<>
+								<div onClick={prev} className="previous">
+									{`< `}Previous
+								</div>
+								<div onClick={next} className="next">
                 Next{ ` >`}
-							</div>	
-						</>
-					)}
-					<div className="close" onClick={() => setCurLocationIdx(null)}>
-						<MdClose className="closeIcon" />
+								</div>	
+							</>
+						)}
+						<div className="close" onClick={() => setCurLocationIdx(null)}>
+							<MdClose className="closeIcon" />
+						</div>
 					</div>
-				</div>
-				<div className="dealerBanner">
-					<Slider {...sliderSettings}>
-						{images.map((img, i) => {
-							return (
-								<div key={i} className="dealerSlide">
-									<img src={img} alt="dealerPaneImg" className="dealerBannerImg"/>
-									<div className="dealerBannerLogo">
-										<div className="sampleLogo">
+					<div className="dealerBanner">
+						<Slider {...sliderSettings}>
+							{images.map((img, i) => {
+								return (
+									<div key={i} className="dealerSlide">
+										<img src={img} alt="dealerPaneImg" className="dealerBannerImg"/>
+										<div className="dealerBannerLogo">
+											<div className="sampleLogo">
                       Dealer Logo
+											</div>
 										</div>
-									</div>
-									<div className="imageSelect">
-										<div className="rec rec1"></div>
-										<div className="rec rec2"></div>
-										<div className="rec rec3"></div>
-									</div>
-								</div> 
-							)
-						})}
-					</Slider>
-				</div>
-				<div className="dealerInfo">
-					<div className="display">
-						<div className="title">{name}</div>
-						<div className="subTitle">
-							<div className="distance">{distance || 1.3} mi</div>
-							<span className="bulletPoint">&bull;</span>
-							<div className="hours">Open until {hours}</div>
-						</div>
+										<div className="imageSelect">
+											<div className="rec rec1"></div>
+											<div className="rec rec2"></div>
+											<div className="rec rec3"></div>
+										</div>
+									</div> 
+								)
+							})}
+						</Slider>
 					</div>
-					<div className="contactIcons">
-						<a 
-							href={`tel:${phone}`} 
-							className="phone"
-						>
-							<FaPhone className="icon phoneIcon" />
-						</a>
-						<a 
-							href={directions} 
-							className="mapMarker"
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							<FaMapMarkerAlt className="icon markerIcon" />
-						</a>
-					</div>
-					<div className="personalInfo">
-						<div className="address">{address}</div>
-						<div className="stateCityZip">{city}, {state} {zip}</div>
-						<div className="phone">{phone}</div>
-						<a href={`mailto:${email}`} className="email">{email}</a>
-					</div>
-					<div className="dealerLevel">
-						<div className="badge">
-            Dealer Level Badge
-						</div>
-						<div className="dealerIcons">
-							<div className="testIcon">Icon</div>
-							<div className="testIcon">Icon</div>
-							<div className="testIcon">Icon</div>
-							<div className="testIcon">Icon</div>
-							<div className="testIcon">Icon</div>
-							<div className="testIcon">Icon</div>
-						</div>
-					</div>
-				</div>
-				<div className="dealerDescription">
-					{description}
-				</div>
-				<div className="dealerVideo">
-					<Player url={video} className="player" width="100%" />
-				</div>
-				<div className="dealerAmenities">
-					{!!categories.length && (
-						<>
-							<div className="sectionHeader">
-                Amenities
+					<div className="dealerInfo">
+						<div className="display">
+							<div className="title">{name}</div>
+							<div className="subTitle">
+								<div className="distance">{distance || 1.3} mi</div>
+								<span className="bulletPoint">&bull;</span>
+								<div className="hours">Open until {hours}</div>
 							</div>
-							<ul className="amenitiesList">
-								{categories.map((cat, i) => {
-									return (
-										<li key={i} className="amenity">
-											<MdPlaylistAdd className="amenityIcon" /> {cat}
-										</li>
-									)
-								})}
-							</ul>
-						</>
+						</div>
+						<div className="contactIcons">
+							<a 
+								href={`tel:${phone}`} 
+								className="phone"
+							>
+								<FaPhone className="icon phoneIcon" />
+							</a>
+							<a 
+								href={directions} 
+								className="mapMarker"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								<FaMapMarkerAlt className="icon markerIcon" />
+							</a>
+						</div>
+						<div className="personalInfo">
+							<div className="address">{address}</div>
+							<div className="stateCityZip">{city}, {state} {zip}</div>
+							<div className="phone">{phone}</div>
+							<a href={`mailto:${email}`} className="email">{email}</a>
+						</div>
+						<div className="dealerLevel">
+							<div className="badge">
+            Dealer Level Badge
+							</div>
+							<div className="dealerIcons">
+								<div className="testIcon">Icon</div>
+								<div className="testIcon">Icon</div>
+								<div className="testIcon">Icon</div>
+								<div className="testIcon">Icon</div>
+								<div className="testIcon">Icon</div>
+								<div className="testIcon">Icon</div>
+							</div>
+						</div>
+					</div>
+					<div className="dealerDescription">
+						{description}
+					</div>
+					<div className="dealerVideo">
+						<Player url={video} className="player" width="100%" />
+					</div>
+					<div className="dealerAmenities">
+						{!!categories.length && (
+							<>
+								<div className="sectionHeader">
+                Amenities
+								</div>
+								<ul className="amenitiesList">
+									{categories.map((cat, i) => {
+										return (
+											<li key={i} className="amenity">
+												<MdPlaylistAdd className="amenityIcon" /> {cat}
+											</li>
+										)
+									})}
+								</ul>
+							</>
           
-					)}
-				</div>
-				<div className="dealerPaneClose">
-					<div className="testMap" />
-					<button className="back" onClick={() => setCurLocationIdx(null)}>
+						)}
+					</div>
+					<div className="dealerPaneClose">
+						<div className="testMap" />
+						<button className="back" onClick={() => setCurLocationIdx(null)}>
               Back to the map
-					</button>
+						</button>
+					</div>
 				</div>
 			</section>
 		</>
@@ -199,7 +201,7 @@ const contentPadding = `20px`
 
 const styles = props => css`
   z-index: 5000;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -207,6 +209,13 @@ const styles = props => css`
   background: #fff;
   overflow: auto;
   text-align: left;
+  @media(min-width: ${props.breakpoint}) {
+    width: ${props?.desktop?.paneWidth || `40vw`};
+    height: ${props?.desktop?.height || `100%`};
+  }
+  .inner {
+    height: 100%;
+  }
   ul {
     list-style: none;
     padding: 0;

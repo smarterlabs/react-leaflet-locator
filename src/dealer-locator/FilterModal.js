@@ -12,7 +12,7 @@ export default function FilterModal(props){
 		active, 
 	} = props
 
-	const { primaryColor } = useContext(StyleContext)
+	const globalStyles = useContext(StyleContext)
 	const [activeFilters, setActiveFilters] = useState({})
   
 	const filters = useMemo(() => {
@@ -74,7 +74,7 @@ export default function FilterModal(props){
 	return (
 		<>
 			{active && <Global styles={global}/>}
-			<div css={() => styles({ primaryColor, active })} className="filterModal">
+			<div css={styles(globalStyles)} className={`filterModal ${active && `active`}`}>
 				<div className="filterModalInner">
 					<div className="close" onClick={() => setFilterModal(false)}>
 						<MdClose className="closeIcon" />
@@ -138,14 +138,21 @@ const global = css`
 
 const styles = props => css`
   z-index: 5000;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background: #fff;
   overflow: auto;
-	display: ${props.active ? `block` : `none`};
+	display: none;
+	@media(min-width: ${props.breakpoint}) {
+    width: ${props?.desktop?.paneWidth || `40vw`};
+		height: ${props?.desktop?.height || `100%`};
+  }
+	&.active {
+		display: block !important;
+	}
   .close {
     text-align: right;
     cursor: pointer;
@@ -161,6 +168,7 @@ const styles = props => css`
   }
   .filterModalInner {
     padding: 20px;
+		height: 100%;
   }
   .filters {
     text-align: left;

@@ -14,117 +14,20 @@ import CurrentLocation from './CurrentLocation'
 import FilterModal from './FilterModal'
 import DealerPane from './DealerPane'
 
-
-const markers = [
-	{ 
-		name: `test1`, 
-		lat: 37.9716, 
-		lng: -87.5711, 
-		hours: `8:00pm`, 
-		phone: `123-123-1234`,
-		categories: [`category a`, `category b`],
-		products: [`product a`, `product b`],
-		images: [
-			`https://via.placeholder.com/800/FFFF00/000000?Text=Image+1`,
-			`https://via.placeholder.com/800/E5CCAA/000000?Text=Image+2`,
-			`https://via.placeholder.com/800/333FFF/000000?Text=Image+3`,
-		],
-		email: `test1@test.com`,
-		description: `here is description for test 1`,
-		video: `https://youtu.be/eYiodrKoGTc`,
-		address: `3655 Hwy 62 W`,
-		city: `Boonville`,
-		state: `IN`,
-		zip: `47601`,
-	},
-	{ 
-		name: `test2`, 
-		lat: 37.8716, 
-		lng: -87.5711,
-		hours: `8:00pm`, 
-		phone: `123-123-1234`,
-		categories: [`category e`, `category d`],
-		products: [`product c`],
-		images: [
-			`https://via.placeholder.com/800/E5CCAA/333?Text=Image+1`,
-			`https://via.placeholder.com/800/E5CCAA/333?Text=Image+2`,
-			`https://via.placeholder.com/800/E5CCAA/333?Text=Image+3`,
-		],
-		email: `test2@test.com`,
-		description: `here is description for test 2`,
-		video: `https://youtu.be/eYiodrKoGTc`,
-		address: `3655 Hwy 62 W`,
-		city: `Boonville`,
-		state: `IN`,
-		zip: `47601`,
-	},
-	{ 
-		name: `test3`, 
-		lat: 37.7716, 
-		lng: -87.5711,
-		hours: `8:00pm`, 
-		phone: `123-123-1234`,
-		categories: [`category c`],
-		products: [`product a`],
-		images: [
-			`https://via.placeholder.com/800/E5CCAA/333?Text=Image+1`,
-			`https://via.placeholder.com/800/E5CCAA/333?Text=Image+2`,
-			`https://via.placeholder.com/800/E5CCAA/333?Text=Image+3`,
-		],
-		email: `test3@test.com`,
-		description: `here is description for test 3`,
-		video: `https://youtu.be/eYiodrKoGTc`,
-		address: `3655 Hwy 62 W`,
-		city: `Boonville`,
-		state: `IN`,
-		zip: `47601`,
-	},
-	{ 
-		name: `test4`, 
-		lat: 37.6716, 
-		lng: -87.5711,
-		hours: `8:00pm`, 
-		phone: `123-123-1234`,
-		categories: [`category e`],
-		products: [`product a`, `product d`],
-		images: [
-			`https://via.placeholder.com/800/E5CCAA/000000?Text=Image+1`,
-			`https://via.placeholder.com/800/E5CCAA/000000?Text=Image+2`,
-			`https://via.placeholder.com/800/E5CCAA/000000?Text=Image+3`,
-		],
-		email: `test4@test.com`,
-		description: `here is description for test 4`,
-		video: `https://youtu.be/eYiodrKoGTc`,
-		address: `3655 Hwy 62 W`,
-		city: `Boonville`,
-		state: `IN`,
-		zip: `47601`,
-	},
-	{ 
-		name: `test5`, 
-		lat: 37.5716, 
-		lng: -87.5711,
-		hours: `8:00pm`, 
-		phone: `123-123-1234`,
-		categories: [`category a`, `category d`],
-		products: [`product c`, `product b`],
-		images: [
-			`https://via.placeholder.com/800/E5CCAA/333?Text=Image+1`,
-			`https://via.placeholder.com/800/E5CCAA/333?Text=Image+2`,
-			`https://via.placeholder.com/800/E5CCAA/333?Text=Image+3`,
-		],
-		email: `test5@test.com`,
-		description: `here is description for test 5`,
-		video: `https://youtu.be/eYiodrKoGTc`,
-		address: `3655 Hwy 62 W`,
-		city: `Boonville`,
-		state: `IN`,
-		zip: `47601`,
-	},
-]
+import markers from '../test-data'
 
 export default function MapLocator(props) {
-	const { center, zoom, maxZoom, primaryColor = `#003CA6` } = props
+	const { 
+		center = [40.2502757,-85.9485402], 
+		zoom = 5, 
+		maxZoom = 30, 
+		primaryColor = `#003CA6`,
+		breakpoint = `1000px`,
+		mobile,
+		desktop,
+		mapMaxWidth = `1000px`,
+	} = props
+
 	const mapEl = useRef(null)
 	const [leaflet, setLeaflet] = useState({})
 	const [visibleLocations, setVisibleLocations] = useState([])
@@ -188,19 +91,12 @@ export default function MapLocator(props) {
 		init()
 
 		// Wait for map ref to be available and update
-		const interval = setInterval(() => {
-			if(!mapEl.current) return
-			clearInterval(interval)
-			handleMove()
-		}, 10)
+		// const interval = setInterval(() => {
+		// 	if(!mapEl.current) return
+		// 	clearInterval(interval)
+		// 	handleMove()
+		// }, 10)
 	}, [])
-
-	useEffect(() => {
-		// search was not setting locations before handleMove() was
-		// getting called. This is to make sure the most current locations
-		// are visisble in the locator list
-		handleMove()
-	}, [locations])
 
 	useEffect(() => {
 		// checks to see to make sure the filteredLocations are still
@@ -213,34 +109,17 @@ export default function MapLocator(props) {
 
 	// keeps track of visible locations in the current bounds
 	const handleMove = () => {
-		const foundLocations = []
 		if(mapEl?.current){
-			const mapBounds = mapEl?.current?.leafletElement?.getBounds()
-			
-			if(locations) {
-				locations.forEach(location => {
-					const { lat, lng } = location
-					if(mapBounds?.contains([lat, lng])){
-						foundLocations.push(location)
-					}
-				})
-			}
-		}
-    
-		setVisibleLocations(foundLocations)
-	}
-
-	// handles search functionality and updating the map location
-	async function handleSearch(location) {	
-		if(location){
-			const { bounds, x, y } = location
-			const [bottomLeft, topRight] = bounds
-
-			const [maxLat, maxLng] = topRight
-			const [minLat, minLng] = bottomLeft
-
-			const searchCenter = [y, x]
 			const leafletElement = mapEl?.current?.leafletElement
+			
+			const mapBounds = leafletElement?.getBounds()
+			const mapCenter = leafletElement?.getCenter()
+
+			const topRight = mapBounds?.getNorthEast()
+			const bottomLeft = mapBounds.getSouthWest()
+
+			const { lat: maxLat, lng: maxLng} = topRight || {}
+			const { lat: minLat, lng: minLng } = bottomLeft || {}
 
 			const locationsInBounds = markers
 				.filter(({ lat, lng }) => (
@@ -251,12 +130,42 @@ export default function MapLocator(props) {
 				))
 				.map(marker => {
 					const markerCenter = [marker.lat, marker.lng]
-					const distance = (leafletElement?.distance(markerCenter, searchCenter)) * 0.00062137
+					const distance = (leafletElement?.distance(markerCenter, mapCenter)) * 0.00062137
 					return { ...marker, distance: distance.toFixed(1) }
 				})
 
-			setLocations(locationsInBounds)
-			
+			const newLocations = locationsInBounds?.filter(loc => !locations?.find(l => l.name === loc.name))
+
+			setLocations([
+				...(locations || []),
+				...newLocations,
+			])
+
+			setVisibleLocations(locationsInBounds)
+				
+			// if(locations) {
+			// 	locations.forEach(location => {
+			// 		const { lat, lng } = location
+			// 		if(mapBounds?.contains([lat, lng])){
+			// 			foundLocations.push(location)
+			// 		}
+			// 	})
+			// }
+		}    
+	}
+
+	// handles search functionality and updating the map location
+	async function handleSearch(location) {	
+		if(location){
+			const { bounds /*, x, y*/ } = location
+			const [bottomLeft, topRight] = bounds
+
+			// const [maxLat, maxLng] = topRight
+			// const [minLat, minLng] = bottomLeft
+
+			// const searchCenter = [y, x]
+			const leafletElement = mapEl?.current?.leafletElement
+
 			if(bounds && leafletElement) { 
 				leafletElement.fitBounds([bottomLeft, topRight])
 			}
@@ -270,29 +179,33 @@ export default function MapLocator(props) {
 	}
 
 	return (
-		<StyleContext.Provider value={{ primaryColor }}>
-			<main css={styles.locatorContainer} className="locatorContainer">
+		<StyleContext.Provider value={{ 
+			primaryColor, breakpoint, 
+			desktop, mobile, 
+		}}>
+			<main css={styles({ breakpoint, mapMaxWidth })} className="locatorContainer">
 				<Global 
-					styles={styles.global}
+					styles={global}
 				/>
 				<Search
 					onSearch={handleSearch}
 					OpenStreetMapProvider={OpenStreetMapProvider}
 					leaf={leaf}
 					mapEl={mapEl}
-					center={center || [40.2502757,-85.9485402]}
-					zoom={zoom || 5}
+					center={center}
+					zoom={zoom}
 					setFilterModal={setFilterModal}
 				/>
-				<div css={styles.mapContainer} className="mapContainer">
+				<div className="mapContainer">
 					<Map
-						center={center || [40.2502757,-85.9485402]}
-						zoom={zoom || 5}
-						maxZoom={maxZoom || 30}
+						center={center}
+						zoom={zoom}
+						maxZoom={maxZoom}
 						css={styles.map}
 						onMoveend={handleMove}
 						ref={mapEl}
 						scrollWheelZoom={false}
+						className="leafletMap"
 					>
 						<TileLayer 
 							attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -345,31 +258,66 @@ export default function MapLocator(props) {
 	)
 }
 
-const styles = {
-	locatorContainer: css`
-		position: relative;
-	`,
-	global: css`
-    body {
-      margin: 0;
-    } 
-	`,
-	map: css`
-    height: 60vh;
+const global = css`
+	body {
+		margin: 0;
+	} 
+`
+
+const styles = props => css`
+	position: relative;
+	@media(min-width: ${props.breakpoint}) {
+		display: grid;
+    grid-template-areas:
+        "search map"
+        "curLoc map"
+        "locs map";
+    grid-template-columns: ${props?.desktop?.paneWidth || `40vw`} 1fr;
+		grid-template-rows: 
+		10vh 
+		20vh 
+		calc(${props?.desktop?.height || `100vh`} - 30vh);
+	}
+	.leafletMap {
+		height: 60vh;
 		width: 100%;
 		.leaflet-control-container {
 			user-select: none;
-    }
-    .markerIcon {
-      background: blue;
-      border-radius: 50%;
-    }
-	`,
-	mapContainer: css`
-		max-width: 1000px;
+		}
+		.markerIcon {
+			background: blue;
+			border-radius: 50%;
+		}
+		@media(min-width: ${props.breakpoint}) {
+			height: 100%;
+		}
+	}
+	.currentLocation {
+		@media(min-width: ${props.breakpoint}) {
+			grid-area: curLoc;
+		}
+	}
+	.searchContainer {
+		@media(min-width: ${props.breakpoint}) {
+			grid-area: search;
+			box-shadow: none;
+		}
+	}
+	.locatorListContainer {
+		@media(min-width: ${props.breakpoint}) {
+			grid-area: locs;
+			overflow: auto;
+		}
+	}
+	.mapContainer {
+		max-width: ${props.mapMaxWidth};
 		width: 100%;
 		margin: 0 auto;
 		z-index: 0;
 		display: flex;
-	`,
-}
+		@media(min-width: ${props.breakpoint}) {
+			grid-area: map;
+			height: ${props?.desktop?.height || `100vh`};
+		}
+	}
+`

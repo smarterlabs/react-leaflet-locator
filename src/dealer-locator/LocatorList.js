@@ -45,7 +45,7 @@ export default function LocatorList(props) {
 									>
 										<FaMapMarkerAlt className="icon markerIcon" />
 									</a>
-									<div className="info">
+									<div className="dealerPage">
 										<FaInfoCircle className="icon infoIcon" />
 									</div>
 								</div>
@@ -89,13 +89,15 @@ const styles = css`
 		padding: 0;
 		margin: 20px;
 	}
-	.icon {
-		width: 25px;
-		height: 25px;
-		color: #999;
-	}
+
 	.contact {
 		display: flex;
-		justify-content: space-evenly;
+		justify-content: flex-end;
+		.icon {
+			width: 30px;
+			height: 30px;
+			color: #999;
+			margin: 0 15px;
+		}
 	}
 `

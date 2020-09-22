@@ -18,7 +18,10 @@
     "react-player": "^2.6.2",
     "react-scripts": "3.4.3",
     "react-slick": "^0.27.11",
-    "slick-carousel": "^1.8.1"
+    "slick-carousel": "^1.8.1",
+    "supercluster": "^7.1.0",
+    "swr": "^0.3.3",
+    "use-supercluster": "^0.2.9"
   },
   "scripts": {
     "start": "react-app-rewired start",

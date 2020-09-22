@@ -1,7 +1,7 @@
 import React from 'react'
 import './App.css'
 
-import Locator from './dealer-locator'
+import Locator from './dealer-locator/SuperclusterMap'
 // import DirectionsMap from './dealer-locator/DirectionsMap'
 
 function App() {

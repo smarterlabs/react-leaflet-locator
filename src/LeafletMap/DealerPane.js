@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from 'react'
-import { navigate } from 'gatsby'
 import { css, Global} from '@emotion/core'
 import Player from 'react-player'
 import { MdClose } from 'react-icons/md'
@@ -234,15 +233,15 @@ export default function DealerPane(props) {
 					)}
 					<div className="dealerPaneClose">
 						<div className="testMap" />
-						<button className="back" onClick={() => {
-							if(backLink) {
-								navigate(backLink)
-							} else {
-								setCurLocationIdx(null)
-							}
-						}}>
-              Back to the map
-						</button>
+            {backLink 
+             ? <a className="back" href={backLink}>Back to the map</a>
+             : (
+              <button
+                onClick={() => setCurLocationIdx(null)}
+              >
+                Back to the map
+              </button>
+            )}
 					</div>
 				</div>
 			</section>

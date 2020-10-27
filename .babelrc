@@ -1,4 +1,10 @@
 {
-  "presets": ["@escaladesports/babel-preset"],
-  "plugins": ["@babel/plugin-proposal-optional-chaining", "emotion"]
+  "presets": [
+    "@escaladesports/babel-preset", 
+    "@emotion/babel-preset-css-prop"
+  ],
+  "plugins": [
+    "@babel/plugin-proposal-optional-chaining", 
+    "emotion"
+  ]
 }

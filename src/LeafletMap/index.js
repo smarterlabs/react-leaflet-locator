@@ -2,7 +2,6 @@
 
 import React, { useState, useRef, useEffect, useMemo } from 'react'
 import { css, Global } from '@emotion/core'
-import { Link } from "gatsby"
 import useSupercluster from "use-supercluster"
 import MoonLoader from "react-spinners/MoonLoader"
 
@@ -18,6 +17,7 @@ import LocatorList from './LocatorList'
 import CurrentLocation from './CurrentLocation'
 import FilterModal from './FilterModal'
 import DealerPane from './DealerPane'
+import SanityImg from './sanity-img'
 
 const icons = {}
 
@@ -39,8 +39,10 @@ export default function MapLocator(props) {
 		getOptions,
 		locations,
 		defaultMapIcon,
-		sanityImg,
+		sanityConfig,
 	} = props
+
+	const sanityImg = useMemo(() => SanityImg(sanityConfig.projectId, sanityConfig.dataset), [])
 
 	useEffect(() => {
 		if(getOptions){
@@ -396,9 +398,9 @@ export default function MapLocator(props) {
 												autoPan={false}
 											>
 												<h3>
-													<Link to={`/dealer/${slug?.current || _id}`}>
+													<a href={`/dealer/${slug?.current || _id}`}>
 														{name}
-													</Link>
+													</a>
 												</h3>
 												<div>{address}</div>
 												<div>{phone}</div>
@@ -521,7 +523,8 @@ const styles = props => css`
 	}
 	.dealerPaneContainer {
 		@media(min-width: ${props.breakpoint}) {
-			width: ${props?.desktop?.paneWidth || `40vw`};
+			min-width: 425px;
+			max-width: 50%;
 			height: ${props?.desktop?.height || `100%`};
 		}
 	}

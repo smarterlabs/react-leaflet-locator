@@ -6,7 +6,6 @@ import debounce from 'lodash/debounce'
 import { AiOutlineSearch } from 'react-icons/ai'
 
 import StyleContext from './context/StyleContext'
-import MapContext from '../../context/MapContext'
 
 export default function Search(props){
 	const { 
@@ -30,7 +29,6 @@ export default function Search(props){
 	const [results, setResults] = useState(null)
 	
 	const globalStyles = useContext(StyleContext)
-	const { search: initSearchFromContext, setSearch } = useContext(MapContext)
 
 	const osmProvider = OpenStreetMapProvider && new OpenStreetMapProvider({
 		params: {
@@ -68,13 +66,14 @@ export default function Search(props){
 			disableClickPropagation(ref.current)
 		}
 		if(initSearch && !searchInput.length){
-			setSearch(initSearch)
+			// setSearch(initSearch)
 			search(initSearch)
-		} else if(initSearchFromContext && !searchInput.length){
-			search(initSearchFromContext)
-			setSearchInput(initSearchFromContext)
-			setZip(initSearchFromContext)
-		}
+		} 
+		// else if(initSearchFromContext && !searchInput.length){
+		// 	search(initSearchFromContext)
+		// 	setSearchInput(initSearchFromContext)
+		// 	setZip(initSearchFromContext)
+		// }
 	}, [])
   
 	const submitSearch = (loc) => {
@@ -94,7 +93,7 @@ export default function Search(props){
 				: label
 			const formatted = addr.replace(/\s{2,}/, ` `)
 			
-			setSearch(postcode)
+			// setSearch(postcode)
 			setSearchInput(formatted || ``)
 			setZip(formatted || ``)
 			onSearch(loc, true)

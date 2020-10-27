@@ -1,15 +1,12 @@
 <html>
   <h2>Hello World</h2>
+  <script type="text/javascript" src="./test-data.js"></script>
   <script type="text/javascript" src="./bundle.js"></script>
   <body>
     <div data-locator-container></div> 
   </body>
   <script>
     const TestInject = window.TestInject
-
-    new TestInject({
-      test: `123`,
-      test2: `234`,
-    })
+    new TestInject({...locatorData})
   </script>
 </html>

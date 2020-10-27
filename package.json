@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@emotion/core": "^10.0.35",
+    "@sanity/block-content-to-react": "^2.0.7",
+    "@sanity/image-url": "^0.140.19",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -12,12 +14,15 @@
     "leaflet-routing-machine": "^3.2.12",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-helmet": "^6.1.0",
+    "react-hubspot-form": "^1.3.7",
     "react-icons": "^3.11.0",
     "react-leaflet": "^2.7.0",
     "react-leaflet-markercluster": "^2.0.0",
     "react-player": "^2.6.2",
     "react-scripts": "3.4.3",
-    "react-slick": "^0.27.11",
+    "react-slick": "^0.27.12",
+    "react-spinners": "^0.9.0",
     "slick-carousel": "^1.8.1",
     "supercluster": "^7.1.0",
     "swr": "^0.3.3",
@@ -29,7 +34,8 @@
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject",
     "copy-html": "cp -R test.html dist/test.html",
-    "build-scripts": "webpack --config webpack.config.js && npm run copy-html"
+    "copy-data": "cp -R test-data.js dist/test-data.js",
+    "build-scripts": "webpack --config webpack.config.js && npm run copy-html && npm run copy-data"
   },
   "husky": {
     "hooks": {
@@ -63,7 +69,9 @@
     "@escaladesports/eslint-config": "^0.2.0",
     "babel-loader": "^8.1.0",
     "babel-plugin-emotion": "^10.0.33",
+    "css-loader": "^5.0.0",
     "customize-cra": "^1.0.0",
+    "file-loader": "^6.2.0",
     "husky": "^4.3.0",
     "lint-staged": "^10.3.0",
     "react-app-rewired": "^2.1.6",

@@ -1,5 +1,9 @@
-export default {
-  defaultMapPin: {
+const locatorData = {
+   sanityConfig: {
+      projectId: `kzfz2ho3`,
+      dataset: `production`,
+   },
+   defaultMapPin: {
     "title": `Elite Dealer Pin`,
     "icon": {
       "asset": {
@@ -18,7 +22,6 @@ export default {
     ],
   },
   locations: [
-    [
       {
          "name":`Alachua Farm & Lumber`,
          "state":`FL`,
@@ -1078,5 +1081,6 @@ export default {
          ],
       },
    ],
-  ],
 }
+
+module.exports = locatorData

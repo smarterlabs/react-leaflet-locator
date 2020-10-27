@@ -1,14 +1,12 @@
 import React from 'react'
 import { render } from 'react-dom'
 
-import TestComp from '../src/TestComp'
+import LeafletMap from '../src/LeafletMap'
 
 function queryRender(query, component) {
   const dataAttr = `[data-locator-${query}]`
   
   const els = document.querySelectorAll(dataAttr)
-
-  console.log(els)
 
   for (let i = els.length; i--; ) {
     if (els[i].dataset.processed) {
@@ -21,11 +19,10 @@ function queryRender(query, component) {
 
 class TestInject {
   constructor(props) {
-    console.log(`Starting Props: `, props)
-    this.inject()
+    this.inject(props)
   }
-  inject() {
-    queryRender(`container`, <TestComp />)
+  inject(props) {
+    queryRender(`container`, <LeafletMap {...props} />)
   }
 }
 

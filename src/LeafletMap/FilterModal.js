@@ -174,7 +174,8 @@ const styles = props => css`
   overflow: auto;
 	display: none;
 	@media(min-width: ${props.breakpoint}) {
-    width: ${props?.desktop?.paneWidth || `40vw`};
+    min-width: 425px;
+		max-width: 50%;
 		height: ${props?.desktop?.height || `100%`};
   }
 	&.active {

@@ -1,7 +1,6 @@
 import React, { useContext } from 'react'
 import { css } from '@emotion/core'
 import { FaMapMarkerAlt, FaPhone, FaInfoCircle } from 'react-icons/fa'
-import { Link } from 'gatsby'
 
 import StyleContext from './context/StyleContext'
 
@@ -68,9 +67,9 @@ export default function LocatorList(props) {
 										>
 											<FaMapMarkerAlt className="icon markerIcon" />
 										</a>
-										<Link to={`/dealer/${slug?.current || _id}`} className="dealerPage">
+										<a href={`/dealer/${slug?.current || _id}`} className="dealerPage">
 											<FaInfoCircle className="icon infoIcon" />
-										</Link>
+										</a>
 									</div>
 								</li>
 							)

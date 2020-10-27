@@ -28,7 +28,8 @@
     "build": "npm run build-scripts && react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject",
-    "build-scripts": "npx babel scripts --out-dir dist && cp -R test.html dist/test.html"
+    "copy-html": "cp -R test.html dist/test.html",
+    "build-scripts": "webpack --config webpack.config.js && npm run copy-html"
   },
   "husky": {
     "hooks": {
@@ -56,13 +57,17 @@
     "@babel/cli": "^7.12.1",
     "@babel/core": "^7.12.3",
     "@babel/plugin-proposal-optional-chaining": "^7.11.0",
+    "@babel/preset-env": "^7.12.1",
     "@emotion/babel-preset-css-prop": "^10.0.27",
     "@escaladesports/babel-preset": "^2.7.0",
     "@escaladesports/eslint-config": "^0.2.0",
+    "babel-loader": "^8.1.0",
     "babel-plugin-emotion": "^10.0.33",
     "customize-cra": "^1.0.0",
     "husky": "^4.3.0",
     "lint-staged": "^10.3.0",
-    "react-app-rewired": "^2.1.6"
+    "react-app-rewired": "^2.1.6",
+    "webpack": "^5.3.0",
+    "webpack-cli": "^4.1.0"
   }
 }

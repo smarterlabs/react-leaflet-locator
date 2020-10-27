@@ -4,7 +4,7 @@ import { render } from 'react-dom'
 import TestComp from '../src/TestComp'
 
 function queryRender(query, component) {
-  const els = document.querySelectorAll(`[data-test-${query}]`)
+  const els = document.querySelectorAll(`[data-${query} = true]`)
   for (let i = els.length; i--; ) {
     if (els[i].dataset.processed) {
       continue
@@ -14,11 +14,15 @@ function queryRender(query, component) {
   }
 }
 
-export default class LocatorInject {
+class TestInject {
   constructor() {
-    // this.inject()
+    this.inject()
   }
   inject() {
-    queryRender(`container`, <TestComp />)
+    console.log(`INjected: `)
+    queryRender(`test`, <TestComp />)
   }
 }
+
+export default TestInject
+

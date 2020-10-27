@@ -1,8 +1,8 @@
 <html>
   <h2>Hello World</h2>
-  <div data-test="container"></div>
-  <script type="module" src="https://map-inject.netlify.app/inject.js">
-    const TestClass = new LocatorInject()
-    TestClass.inject()
-  </script>
+  <script src="./bundle.js"></script>
+  <script>console.log(new TestInject)</script>
+  <body>
+    <div data-test="true"></div> 
+  </body>
 </html>

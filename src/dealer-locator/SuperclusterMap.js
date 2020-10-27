@@ -16,19 +16,19 @@ const fetcher = (...args) => window?.fetch(...args).then(response => response.js
 
 const cuffs = new L.divIcon({
   className: `singleMarker`,
-});
+})
 
-const icons = {};
+const icons = {}
 const fetchIcon = (count, size) => {
   if (!icons[count]) {
     icons[count] = L.divIcon({
       html: `<div class="cluster-marker" style="width: ${size}px; height: ${size}px;">
         ${count}
-      </div>`
-    });
+      </div>`,
+    })
   }
-  return icons[count];
-};
+  return icons[count]
+}
 
 export default function App() {
 	// state and refs
@@ -53,7 +53,6 @@ export default function App() {
 		},
 	}))
   
-	console.log(`Points: `, points)
 	// get map bounds
 	function updateMap() {
 		if(mapRef?.current){
@@ -95,12 +94,12 @@ export default function App() {
 			/>
 			{clusters?.map?.(cluster => {
         // every cluster point has coordinates
-        const [longitude, latitude] = cluster.geometry.coordinates;
+        const [longitude, latitude] = cluster.geometry.coordinates
         // the point may be either a cluster or a crime point
         const {
           cluster: isCluster,
-          point_count: pointCount
-        } = cluster.properties;
+          point_count: pointCount,
+        } = cluster.properties
 
         // we have a cluster to render
         if (isCluster) {
@@ -110,20 +109,20 @@ export default function App() {
               position={[latitude, longitude]}
               icon={fetchIcon(
                 pointCount,
-                10 + (pointCount / points.length) * 40
+                10 + (pointCount / points.length) * 40,
 							)}
 							onClick={() => {
 								const expansionZoom = Math.min(
                   supercluster.getClusterExpansionZoom(cluster.id),
-                  17
-                );
-                const leaflet = mapRef.current.leafletElement;
+                  17,
+                )
+                const leaflet = mapRef.current.leafletElement
                 leaflet.setView([latitude, longitude], expansionZoom, {
-                  animate: true
-                });
+                  animate: true,
+                })
 							}}
             />
-          );
+          )
         }
 
         // we have a single point (crime) to render
@@ -133,7 +132,7 @@ export default function App() {
 						position={[latitude, longitude]}
 						icon={cuffs}
           />
-        );
+        )
       })}
 		</Map>
 	)

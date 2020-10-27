@@ -28,7 +28,7 @@
     "build": "npm run build-scripts && react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject",
-    "build-scripts": "npx babel scripts --out-dir dist"
+    "build-scripts": "npx babel scripts --out-dir dist && cp -R test.html dist/test.html"
   },
   "husky": {
     "hooks": {

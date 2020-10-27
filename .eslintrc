@@ -1,4 +1,8 @@
 {
 	"extends": "@escaladesports/eslint-config",
-	"plugins": ["react-hooks"]
+	"plugins": ["react-hooks"],
+	"rules" : {
+    "template-curly-spacing" : "off",
+    "indent" : "off"
+  }
 }

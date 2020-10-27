@@ -12,7 +12,7 @@ import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
 
 import StyleContext from './context/StyleContext'
-import SanityContext from '../../context/SanityContext'
+import SanityContext from './context/SanityContext'
 
 export default function DealerPane(props) {
 	const sliderSettings = {

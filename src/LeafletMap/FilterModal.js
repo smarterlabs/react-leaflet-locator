@@ -3,7 +3,7 @@ import { css, Global } from '@emotion/core'
 import { MdClose, MdDone } from 'react-icons/md'
 
 import StyleContext from './context/StyleContext'
-import SanityContext from '../../context/SanityContext'
+import SanityContext from './context/SanityContext'
 
 export default function FilterModal(props){
 	const { 

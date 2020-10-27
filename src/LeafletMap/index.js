@@ -12,6 +12,7 @@ import 'leaflet/dist/leaflet.css'
 
 import Seo from './seo'
 import StyleContext from './context/StyleContext'
+import SanityContext from './context/SanityContext'
 import Search from './Search'
 import LocatorList from './LocatorList'
 import CurrentLocation from './CurrentLocation'
@@ -287,155 +288,157 @@ export default function MapLocator(props) {
 				primaryColor, breakpoint, 
 				desktop, mobile, 
 			}}>
-				<main css={styles({ breakpoint, mapMaxWidth })} className="locatorContainer">
-					<Global 
-						styles={global}
-					/>
-					<Search
-						onSearch={handleSearch}
-						OpenStreetMapProvider={OpenStreetMapProvider}
-						leaf={leaf}
-						mapEl={mapEl}
-						center={center}
-						zoom={initZoom}
-						setFilterModal={setFilterModal}
-						disableFilters={disableFilters}
-						initSearch={initSearch}
-					/>
-					<div className="mapContainer">
-						<LeafletMap
+				<SanityContext.Provider value={{ sanityImg }}>
+					<main css={styles({ breakpoint, mapMaxWidth })} className="locatorContainer">
+						<Global 
+							styles={global}
+						/>
+						<Search
+							onSearch={handleSearch}
+							OpenStreetMapProvider={OpenStreetMapProvider}
+							leaf={leaf}
+							mapEl={mapEl}
 							center={center}
 							zoom={initZoom}
-							maxZoom={maxZoom}
-							css={styles.map}
-							onMoveend={handleMove}
-							ref={mapEl}
-							scrollWheelZoom={false}
-							className="leafletMap"
-							preferCanvas={true}
-						>
-							<TileLayer 
-								attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-								url='https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png'
-							/>
-							{searched && clusters?.map?.((cluster, i) => {
-								const [longitude, latitude] = cluster.geometry.coordinates
-								
-								const {
-									cluster: isCluster,
-									point_count: pointCount,
-									name,
-									_id,
-									phone,
-									slug,
-									mapIcon,
-									address,
-								} = cluster.properties
-
-								const mapIconId = mapIcon?.icon?.asset?._id 
-								const dealerDomain = mapIcon?.domains?.find(obj => obj.domain === domain)
-								const dealerDomainIconId = dealerDomain?.icon?.asset?._id
-								// we have a cluster to render
-								if(isCluster) {
-									return (
-										<Marker
-											key={`cluster-${cluster.id}-${i}`}
-											position={[latitude, longitude]}
-											icon={fetchClusterIcon(
-												pointCount,
-												10 + (pointCount / locations.length) * 350,
-											)}
-											onClick={() => {
-												const expansionZoom = Math.min(
-													supercluster.getClusterExpansionZoom(cluster.id),
-													17,
-												)
-												const leaflet = mapEl.current.leafletElement
-												leaflet.setView([latitude, longitude], expansionZoom, {
-													animate: true,
-												})
-											}}
-										/>
-									)
-								}
-	
-								// we have a single point to render
-								// NEED to break icon logic out so it's not so confusing 
-								return (
-									<Marker 
-										key={`dealer-${_id}-${i}`} 
-										icon={sanityImg 
-											? dealerDomainIconId
-												? fetchImageIcon(dealerDomain?.domain, sanityImg(dealerDomainIconId).url())
-												: mapIconId
-													? fetchImageIcon(mapIcon?.title, sanityImg(mapIconId).url()) 
-													: defaultDomainIconId
-														? fetchImageIcon(defaultDomain?.domain, sanityImg(defaultDomainIconId).url()) 
-														: defaultIcon
-															? defaultIcon
-															: leaf.divIcon({ className: `singleMarker` })
-											: leaf.divIcon({ className: `singleMarker` })
-										} 
-										position={[latitude, longitude]}
-										onClick={e => {
-											if(e.target.isPopupOpen()){
-												e.target.closePopup()
-											}
-											setCurLocationIdx(i)
-										}}
-										onMouseOver={e => {
-											e.target.openPopup()
-										}}
-										// onMouseOut={e => {
-										// 	e.target.closePopup()
-										// }}
-									>
-										<Popup
-											autoPan={false}
-										>
-											<h3>
-												<Link to={`/dealer/${slug?.current || _id}`}>
-													{name}
-												</Link>
-											</h3>
-											<div>{address}</div>
-											<div>{phone}</div>
-										</Popup>
-									</Marker>
-								)
-							})}
-						</LeafletMap>
-					</div>
-					<CurrentLocation 
-						mapEl={mapEl} 
-						setCurrentLocation={setCurrentLocation} 
-					/>
-					<LocatorList 
-						locations={searched ? (filteredLocations || visibleLocations).slice(0, 20) : []} 
-						currentLocation={currentLocation}
-						setCurLocationIdx={setCurLocationIdx}
-						noDealers={searched ? (filteredLocations || visibleLocations).length < 1 : false}
-						onLocationSelect={onLocationSelect}
-						curLocationIdx={curLocationIdx}
-					/>
-					{!disableFilters && <FilterModal 
-						active={searched && filterModal && !!visibleLocations.length}
-						setFilterModal={setFilterModal}
-						locations={locations} 
-						setFilteredLocations={setFilteredLocations}
-					/>}
-					{!disableDealerPane && (visibleLocations?.[curLocationIdx] && (
-						<DealerPane
-							location={visibleLocations?.[curLocationIdx]}
-							curLocationIdx={curLocationIdx}
-							setCurLocationIdx={setCurLocationIdx}
-							totalLocations={filteredLocations 
-								? filteredLocations.slice(0, 20).length 
-								: visibleLocations.slice(0, 20).length
-							}
+							setFilterModal={setFilterModal}
+							disableFilters={disableFilters}
+							initSearch={initSearch}
 						/>
-					))}
-				</main>
+						<div className="mapContainer">
+							<LeafletMap
+								center={center}
+								zoom={initZoom}
+								maxZoom={maxZoom}
+								css={styles.map}
+								onMoveend={handleMove}
+								ref={mapEl}
+								scrollWheelZoom={false}
+								className="leafletMap"
+								preferCanvas={true}
+							>
+								<TileLayer 
+									attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+									url='https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png'
+								/>
+								{searched && clusters?.map?.((cluster, i) => {
+									const [longitude, latitude] = cluster.geometry.coordinates
+									
+									const {
+										cluster: isCluster,
+										point_count: pointCount,
+										name,
+										_id,
+										phone,
+										slug,
+										mapIcon,
+										address,
+									} = cluster.properties
+
+									const mapIconId = mapIcon?.icon?.asset?._id 
+									const dealerDomain = mapIcon?.domains?.find(obj => obj.domain === domain)
+									const dealerDomainIconId = dealerDomain?.icon?.asset?._id
+									// we have a cluster to render
+									if(isCluster) {
+										return (
+											<Marker
+												key={`cluster-${cluster.id}-${i}`}
+												position={[latitude, longitude]}
+												icon={fetchClusterIcon(
+													pointCount,
+													10 + (pointCount / locations.length) * 350,
+												)}
+												onClick={() => {
+													const expansionZoom = Math.min(
+														supercluster.getClusterExpansionZoom(cluster.id),
+														17,
+													)
+													const leaflet = mapEl.current.leafletElement
+													leaflet.setView([latitude, longitude], expansionZoom, {
+														animate: true,
+													})
+												}}
+											/>
+										)
+									}
+		
+									// we have a single point to render
+									// NEED to break icon logic out so it's not so confusing 
+									return (
+										<Marker 
+											key={`dealer-${_id}-${i}`} 
+											icon={sanityImg 
+												? dealerDomainIconId
+													? fetchImageIcon(dealerDomain?.domain, sanityImg(dealerDomainIconId).url())
+													: mapIconId
+														? fetchImageIcon(mapIcon?.title, sanityImg(mapIconId).url()) 
+														: defaultDomainIconId
+															? fetchImageIcon(defaultDomain?.domain, sanityImg(defaultDomainIconId).url()) 
+															: defaultIcon
+																? defaultIcon
+																: leaf.divIcon({ className: `singleMarker` })
+												: leaf.divIcon({ className: `singleMarker` })
+											} 
+											position={[latitude, longitude]}
+											onClick={e => {
+												if(e.target.isPopupOpen()){
+													e.target.closePopup()
+												}
+												setCurLocationIdx(i)
+											}}
+											onMouseOver={e => {
+												e.target.openPopup()
+											}}
+											// onMouseOut={e => {
+											// 	e.target.closePopup()
+											// }}
+										>
+											<Popup
+												autoPan={false}
+											>
+												<h3>
+													<Link to={`/dealer/${slug?.current || _id}`}>
+														{name}
+													</Link>
+												</h3>
+												<div>{address}</div>
+												<div>{phone}</div>
+											</Popup>
+										</Marker>
+									)
+								})}
+							</LeafletMap>
+						</div>
+						<CurrentLocation 
+							mapEl={mapEl} 
+							setCurrentLocation={setCurrentLocation} 
+						/>
+						<LocatorList 
+							locations={searched ? (filteredLocations || visibleLocations).slice(0, 20) : []} 
+							currentLocation={currentLocation}
+							setCurLocationIdx={setCurLocationIdx}
+							noDealers={searched ? (filteredLocations || visibleLocations).length < 1 : false}
+							onLocationSelect={onLocationSelect}
+							curLocationIdx={curLocationIdx}
+						/>
+						{!disableFilters && <FilterModal 
+							active={searched && filterModal && !!visibleLocations.length}
+							setFilterModal={setFilterModal}
+							locations={locations} 
+							setFilteredLocations={setFilteredLocations}
+						/>}
+						{!disableDealerPane && (visibleLocations?.[curLocationIdx] && (
+							<DealerPane
+								location={visibleLocations?.[curLocationIdx]}
+								curLocationIdx={curLocationIdx}
+								setCurLocationIdx={setCurLocationIdx}
+								totalLocations={filteredLocations 
+									? filteredLocations.slice(0, 20).length 
+									: visibleLocations.slice(0, 20).length
+								}
+							/>
+						))}
+					</main>
+				</SanityContext.Provider>
 			</StyleContext.Provider>
 		)
 	}

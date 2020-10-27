@@ -1,8 +1,15 @@
 <html>
   <h2>Hello World</h2>
-  <script src="./bundle.js"></script>
-  <script>console.log(new TestInject)</script>
+  <script type="text/javascript" src="./bundle.js"></script>
   <body>
-    <div data-test="true"></div> 
+    <div data-locator-container></div> 
   </body>
+  <script>
+    const TestInject = window.TestInject
+
+    new TestInject({
+      test: `123`,
+      test2: `234`,
+    })
+  </script>
 </html>

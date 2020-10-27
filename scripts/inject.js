@@ -4,7 +4,12 @@ import { render } from 'react-dom'
 import TestComp from '../src/TestComp'
 
 function queryRender(query, component) {
-  const els = document.querySelectorAll(`[data-${query} = true]`)
+  const dataAttr = `[data-locator-${query}]`
+  
+  const els = document.querySelectorAll(dataAttr)
+
+  console.log(els)
+
   for (let i = els.length; i--; ) {
     if (els[i].dataset.processed) {
       continue
@@ -15,14 +20,16 @@ function queryRender(query, component) {
 }
 
 class TestInject {
-  constructor() {
+  constructor(props) {
+    console.log(`Starting Props: `, props)
     this.inject()
   }
   inject() {
-    console.log(`INjected: `)
-    queryRender(`test`, <TestComp />)
+    queryRender(`container`, <TestComp />)
   }
 }
 
-export default TestInject
+window.TestInject = TestInject
+
+
 

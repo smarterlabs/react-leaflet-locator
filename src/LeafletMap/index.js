@@ -6,9 +6,8 @@ import useSupercluster from "use-supercluster"
 import MoonLoader from "react-spinners/MoonLoader"
 
 // import debounce from 'lodash/debounce'
-
-import 'leaflet/dist/leaflet.css'
-
+import leafcss from 'leaflet/dist/leaflet.css'
+console.log(`leaf css: `, leafcss)
 import Seo from './seo'
 import StyleContext from './context/StyleContext'
 import SanityContext from './context/SanityContext'

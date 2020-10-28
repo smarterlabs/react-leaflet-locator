@@ -7,6 +7,12 @@ module.exports = {
     path: path.resolve(__dirname, `dist`),
     filename: `bundle.js`,
   },
+  resolve: {
+    extensions: [`.html`, `.js`, `.json`, `.scss`, `.css`],
+    alias: {
+      leafModule: __dirname + `/node_modules/leaflet/dist/leaflet.css`,
+    },
+  },
   module: {
     rules: [
       {
@@ -35,7 +41,7 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        exclude: /(node_modules)/,
+        exclude: /node_modules/,
         use:  {
           loader: `babel-loader`,
           options: {

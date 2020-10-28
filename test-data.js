@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 const locatorData = {
    sanityConfig: {
       projectId: `kzfz2ho3`,
@@ -1082,5 +1083,3 @@ const locatorData = {
       },
    ],
 }
-
-module.exports = locatorData

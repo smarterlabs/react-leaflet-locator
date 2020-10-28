@@ -36,7 +36,7 @@
     "copy-css": "cp -R node_modules/leaflet/dist/leaflet.css dist/leaflet.css",
     "copy-html": "cp -R test.html dist/test.html",
     "copy-data": "cp -R test-data.js dist/test-data.js",
-    "build-scripts": "npm run copy-html && npm run copy-data && webpack --config webpack.config.js"
+    "build-scripts": "webpack --config webpack.config.js && npm run copy-html && npm run copy-data"
   },
   "husky": {
     "hooks": {

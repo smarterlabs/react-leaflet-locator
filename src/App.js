@@ -1,13 +1,13 @@
 import React from 'react'
 import './App.css'
 
-import Locator from './dealer-locator/SuperclusterMap'
-// import DirectionsMap from './dealer-locator/DirectionsMap'
+import Locator from './LeafletMap'
+import data from '../test-data'
 
 function App() {
 	return (
 		<div className="App">
-			<Locator />
+			<Locator {...data} />
 		</div>
 	)
 }

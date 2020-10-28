@@ -1083,3 +1083,5 @@ const locatorData = {
       },
    ],
 }
+
+export default locatorData

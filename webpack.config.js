@@ -2,16 +2,11 @@ var path = require(`path`)
 
 module.exports = {
   mode: `development`,
-  entry: `./scripts/inject.js`,
+  // entry: `./scripts/inject.js`,
+  entry: `./src/App.js`,
   output: {
     path: path.resolve(__dirname, `dist`),
     filename: `bundle.js`,
-  },
-  resolve: {
-    extensions: [`.html`, `.js`, `.json`, `.scss`, `.css`],
-    alias: {
-      leafModule: __dirname + `/node_modules/leaflet/dist/leaflet.css`,
-    },
   },
   module: {
     rules: [
@@ -37,7 +32,16 @@ module.exports = {
       },
       {
         test: /\.css$/i,
-        use: [`style-loader`, `css-loader`],
+        use: [
+          `style-loader`, 
+          {
+            loader: `css-loader`,
+            options: {
+              // Enable css as module so we can import
+              modules: true,
+            },
+          },
+        ],
       },
       {
         test: /\.js$/,

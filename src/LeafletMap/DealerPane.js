@@ -7,8 +7,11 @@ import Slider from "react-slick"
 import BlockContent from '@sanity/block-content-to-react'
 import HubspotForm from 'react-hubspot-form'
 
-import "slick-carousel/slick/slick.css"
-import "slick-carousel/slick/slick-theme.css"
+import slickCss from "slick-carousel/slick/slick.css"
+import slickCssTheme from "slick-carousel/slick/slick-theme.css"
+
+console.log(`Slick Css: `, slickCss)
+console.log(`Slick Theme Css: `, slickCssTheme)
 
 import StyleContext from './context/StyleContext'
 import SanityContext from './context/SanityContext'

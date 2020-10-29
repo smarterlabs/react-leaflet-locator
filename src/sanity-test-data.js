@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-const locatorData = {
+export default {
    sanityConfig: {
       projectId: `kzfz2ho3`,
       dataset: `production`,

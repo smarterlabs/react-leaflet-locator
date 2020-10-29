@@ -6,8 +6,8 @@ import useSupercluster from "use-supercluster"
 import MoonLoader from "react-spinners/MoonLoader"
 
 // import debounce from 'lodash/debounce'
-import leafcss from 'leaflet/dist/leaflet.css'
-console.log(`leaf css: `, leafcss)
+import 'leaflet/dist/leaflet.css'
+
 import Seo from './seo'
 import StyleContext from './context/StyleContext'
 import SanityContext from './context/SanityContext'
@@ -307,14 +307,14 @@ export default function MapLocator(props) {
 						/>
 						<div className="mapContainer">
 							<LeafletMap
+								className={`leafletMap`}
 								center={center}
 								zoom={initZoom}
 								maxZoom={maxZoom}
-								css={styles.map}
+								css={[styles.map]}
 								onMoveend={handleMove}
 								ref={mapEl}
 								scrollWheelZoom={false}
-								className="leafletMap"
 								preferCanvas={true}
 							>
 								<TileLayer 

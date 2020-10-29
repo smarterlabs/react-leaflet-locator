@@ -1,5 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 import React, { useContext, useEffect } from 'react'
-import { css, Global} from '@emotion/core'
+import { css, Global } from '@emotion/core'
 import Player from 'react-player'
 import { MdClose } from 'react-icons/md'
 import { FaMapMarkerAlt, FaPhone } from 'react-icons/fa'
@@ -7,11 +9,8 @@ import Slider from "react-slick"
 import BlockContent from '@sanity/block-content-to-react'
 import HubspotForm from 'react-hubspot-form'
 
-import slickCss from "slick-carousel/slick/slick.css"
-import slickCssTheme from "slick-carousel/slick/slick-theme.css"
-
-console.log(`Slick Css: `, slickCss)
-console.log(`Slick Theme Css: `, slickCssTheme)
+import "slick-carousel/slick/slick.css"
+import "slick-carousel/slick/slick-theme.css"
 
 import StyleContext from './context/StyleContext'
 import SanityContext from './context/SanityContext'
@@ -124,11 +123,11 @@ export default function DealerPane(props) {
 												.maxHeight(600)
 												.url()
 											} 
-											alt="dealerPaneImg" 
+											alt="" 
 											className="dealerBannerImg"
 										/>
 										<div className="dealerBannerLogo">
-											{logo?.asset && <img src={sanityImg(logo?.asset?._id).url()} alt="dealer logo" />}
+											{logo?.asset && <img src={sanityImg(logo?.asset?._id).url()} alt="" />}
 										</div>
 										<div className="imageSelect">
 											<div className="rec rec1"></div>
@@ -182,7 +181,7 @@ export default function DealerPane(props) {
 						<div className="dealerLevel">
 							<div className="badge">
 								{mapIcon?.icon?.asset?._id && ( 
-									<img src={sanityImg(mapIcon?.icon?.asset?._id).url()} alt={mapIcon?.title} />
+									<img src={sanityImg(mapIcon?.icon?.asset?._id).url()} alt="" />
 								)}
 							</div>
 							{!!productAvailabilityList?.length && (
@@ -218,7 +217,7 @@ export default function DealerPane(props) {
 								const iconImgId = icon?.asset?._id
 								return (
 									<li key={i} className="amenity">
-										{iconImgId && <img src={sanityImg(iconImgId).url()} className="amenityIcon" />} 
+										{iconImgId && <img src={sanityImg(iconImgId).url()} alt="" className="amenityIcon" />} 
 										{title}
 									</li>
 								)

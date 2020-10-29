@@ -2,7 +2,7 @@ import React from 'react'
 import './App.css'
 
 import Locator from './LeafletMap'
-import data from '../test-data'
+import data from './sanity-test-data'
 
 function App() {
 	return (

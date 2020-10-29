@@ -1,22 +1,22 @@
 var path = require(`path`)
+// const MiniCssExtractPlugin = require(`mini-css-extract-plugin`)
 
 module.exports = {
   mode: `development`,
-  // entry: `./scripts/inject.js`,
-  entry: `./src/App.js`,
+  entry: `./scripts/inject.js`,
   output: {
     path: path.resolve(__dirname, `dist`),
     filename: `bundle.js`,
   },
+  // plugins: [new MiniCssExtractPlugin({
+  //   filename: `[name].css`,
+  //   chunkFilename: `[id].css`,
+  // })],
   module: {
     rules: [
       {
         test: /\.(png|jpe?g|gif)$/i,
-        use: [
-          {
-            loader: `file-loader`,
-          },
-        ],
+        use: [`file-loader`],
       },
       {
         test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
@@ -31,17 +31,26 @@ module.exports = {
         ],
       },
       {
-        test: /\.css$/i,
+        test: /\.css$/,
         use: [
-          `style-loader`, 
+          `style-loader`,
           {
             loader: `css-loader`,
             options: {
-              // Enable css as module so we can import
+              importLoaders: 1,
               modules: true,
             },
           },
         ],
+        include: /\.module\.css$/,
+      },
+      {
+        test: /\.css$/,
+        use: [
+          `style-loader`,
+          `css-loader`,
+        ],
+        exclude: /\.module\.css$/,
       },
       {
         test: /\.js$/,

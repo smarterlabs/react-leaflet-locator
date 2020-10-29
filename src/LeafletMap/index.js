@@ -2,11 +2,15 @@
 
 import React, { useState, useRef, useEffect, useMemo } from 'react'
 import { css, Global } from '@emotion/core'
+import { injectGlobal } from 'emotion'
+
 import useSupercluster from "use-supercluster"
 import MoonLoader from "react-spinners/MoonLoader"
 
 // import debounce from 'lodash/debounce'
-import 'leaflet/dist/leaflet.css'
+injectGlobal`
+${require(`leaflet/dist/leaflet.css`).toString()}
+`
 
 import Seo from './seo'
 import StyleContext from './context/StyleContext'

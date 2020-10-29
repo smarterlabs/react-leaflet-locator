@@ -1,6 +1,7 @@
 {
   "presets": [
-    "@escaladesports/babel-preset"
+    "@escaladesports/babel-preset", 
+    "@emotion/babel-preset-css-prop"
   ],
   "plugins": [
     "@babel/plugin-proposal-optional-chaining", 

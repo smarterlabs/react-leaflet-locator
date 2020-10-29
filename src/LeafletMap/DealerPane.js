@@ -2,6 +2,7 @@
 
 import React, { useContext, useEffect } from 'react'
 import { css, Global } from '@emotion/core'
+import { injectGlobal } from 'emotion'
 import Player from 'react-player'
 import { MdClose } from 'react-icons/md'
 import { FaMapMarkerAlt, FaPhone } from 'react-icons/fa'
@@ -9,8 +10,10 @@ import Slider from "react-slick"
 import BlockContent from '@sanity/block-content-to-react'
 import HubspotForm from 'react-hubspot-form'
 
-import "slick-carousel/slick/slick.css"
-import "slick-carousel/slick/slick-theme.css"
+injectGlobal`
+${require(`slick-carousel/slick/slick.css`).toString()}
+${require(`slick-carousel/slick/slick-theme.css`).toString()}
+`
 
 import StyleContext from './context/StyleContext'
 import SanityContext from './context/SanityContext'

@@ -42,7 +42,7 @@ export default function DealerPane(props) {
 		amenitiesList,
 		images,
 		siteUrl,
-		_rawDescription,
+		description,
 		distance,
 		address,
 		city,
@@ -204,8 +204,8 @@ export default function DealerPane(props) {
 							
 						</div>
 					</div>
-					{_rawDescription && <div className="dealerDescription">
-						{ _rawDescription && <BlockContent blocks={_rawDescription} /> }
+					{description && <div className="dealerDescription">
+            <BlockContent blocks={description} />
 					</div>}
 					{video && <div className="dealerVideo">
 						<Player url={video} className="player" width="100%" />

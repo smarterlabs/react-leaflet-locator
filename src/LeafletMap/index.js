@@ -56,10 +56,6 @@ export default function MapLocator(props) {
 		domains[] { ..., icon { ..., asset-> } }
 	}`), null)
 	const defaultMapIcon = mapIcons?.[0]
-	console.log(`Locations: `, defaultMapIcon)
-	console.log(`Default map icon: `, defaultMapIcon)
-	return <div>test</div>
-
 
 	useEffect(() => {
 		if(getOptions){

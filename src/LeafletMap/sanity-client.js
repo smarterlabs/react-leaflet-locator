@@ -2,7 +2,7 @@ import sanityClient from '@sanity/client'
 import imageUrlBuilder from '@sanity/image-url'
 
 
-export default function SanityImg(projectId = ``, dataset = ``) {
+export default function SanityClient(projectId = ``, dataset = ``) {
   const client = sanityClient({
     projectId,
     dataset,
@@ -15,5 +15,8 @@ export default function SanityImg(projectId = ``, dataset = ``) {
     return builder.image(source)
   }
 
-  return sanityImg
+  return {
+    sanityImg,
+    client,
+  }
 }

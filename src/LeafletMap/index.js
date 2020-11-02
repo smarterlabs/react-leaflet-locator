@@ -20,7 +20,8 @@ import LocatorList from './LocatorList'
 import CurrentLocation from './CurrentLocation'
 import FilterModal from './FilterModal'
 import DealerPane from './DealerPane'
-import SanityImg from './sanity-img'
+import sanityClient from './sanity-client'
+import useLocations from './hooks/useLocations'
 
 const icons = {}
 
@@ -40,12 +41,17 @@ export default function MapLocator(props) {
 		onLocationSelect,
 		seo,
 		getOptions,
-		locations,
+		// locations,
 		defaultMapIcon,
 		sanityConfig,
 	} = props
 
-	const sanityImg = useMemo(() => SanityImg(sanityConfig.projectId, sanityConfig.dataset), [])
+	const [locations] = useLocations(sanityConfig.projectId, sanityConfig.dataset)
+	console.log(`Locations: `, locations)
+
+	return <div>test</div>
+
+	const { sanityImg } = useMemo(() => sanityClient(sanityConfig.projectId, sanityConfig.dataset), [])
 
 	useEffect(() => {
 		if(getOptions){
@@ -350,7 +356,7 @@ export default function MapLocator(props) {
 												position={[latitude, longitude]}
 												icon={fetchClusterIcon(
 													pointCount,
-													10 + (pointCount / locations.length) * 350,
+													10 + (pointCount / points.length) * 50,
 												)}
 												onClick={() => {
 													const expansionZoom = Math.min(

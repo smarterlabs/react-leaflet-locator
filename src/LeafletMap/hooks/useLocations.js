@@ -22,7 +22,7 @@ export default function FetchLocations(projectId, dataset){
           console.log(`Domain Data: `, domainData)
         
           const locationQuery = /* groq */`*[_type == "dealer" && domains[]._ref == $domainId]`
-          const locationParams = { domainId: domainData?._id }
+          const locationParams = { domainId: domainData?.[0]?._id }
           const locationData = await client.fetch(locationQuery, locationParams)
           console.log(`Location Data: `, locationData)
           if(isSubscribed) {

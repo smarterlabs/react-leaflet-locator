@@ -21,7 +21,51 @@ export default function FetchLocations(projectId, dataset){
           const domainData = await client.fetch(domainQuery, domainParams)
           console.log(`Domain Data: `, domainData)
         
-          const locationQuery = /* groq */`*[_type == "dealer" && domains[]._ref == $domainId]`
+          const locationQuery = /* groq */`*[_type == "dealer" && domains[]._ref == $domainId]{
+            ...,
+            domains[]->,
+            productAvailabilityList[]-> {
+              ...,
+              icon {
+                ...,
+                asset->
+              }
+            },
+            amenitiesList[]-> {
+              ...,
+              icon {
+              ...,
+              asset->
+              }
+            },
+            images[] { ..., asset-> },
+            logo { ..., asset-> },
+            mapIcon-> {
+              domains[] {
+                ...,
+                icon { ..., asset-> }
+              },
+              icon { ..., asset-> }
+            }
+            ,
+            seo {
+              ...,
+              twitter {
+                ...,
+                image {
+                  ...,
+                  asset->
+                  }
+              },
+              og {
+                ...,
+                image {
+                  ...,
+                  asset->
+                  }
+              }
+            }
+          }`
           const locationParams = { domainId: domainData?.[0]?._id }
           const locationData = await client.fetch(locationQuery, locationParams)
           console.log(`Location Data: `, locationData)

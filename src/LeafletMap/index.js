@@ -53,7 +53,7 @@ export default function MapLocator(props) {
 	const [mapIcons] = usePromise(client.fetch(/* groq */`*[_type == "mapIcon" && default == true]`), null)
 	const defaultMapIcon = mapIcons?.[0]
 	console.log(`Locations: `, defaultMapIcon)
-
+	console.log(`Default map icon: `, defaultMapIcon)
 	return <div>test</div>
 
 

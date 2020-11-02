@@ -284,7 +284,7 @@ export default function MapLocator(props) {
 	// const memoRender = 
 
 	const renderer = () => {
-		if(!LeafletMap) {
+		if(!LeafletMap || !locations?.length) {
 			return (
 				<div 
 					css={css`

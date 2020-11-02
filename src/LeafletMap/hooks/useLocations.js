@@ -7,7 +7,7 @@ import sanityClient from '../sanity-client'
 export default function FetchLocations(projectId, dataset){
   const { client } = sanityClient(projectId, dataset)
 
-  const [locations, setLocations] = useState(null)
+  const [locations, setLocations] = useState([])
 
   useEffect(() => {
     if(typeof window !== `undefined`){

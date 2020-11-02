@@ -8,16 +8,14 @@ Injection is using the `build-scripts` command. It is using the inject script in
 
 ```html
 <html>
-  <h2>Hello World</h2>
+  <h2>Test Stand Alone Dealer Page</h2>
   <body>
     <div data-locator-container></div> <!-- This must have the data attribute 'data-locator-container'. This is where the map will be injected. -->
   </body>
-  <script type="text/javascript" src="https://map-inject.netlify.app/bundle.js"></script>
+ <script type="text/javascript" src="./bundle.js"></script>
   <script>
     const TestInject = window.TestInject
-    new TestInject({...locatorData}) // pass data through here example of data below.
+    new TestInject()
   </script>
 </html>
 ```
-
-For example data reference [here](https://github.com/tbaustin/react-leaflet-locator/blob/master/test-data.js). Currently you must format the data to exactly match or else things will not work. This can be changed in the future

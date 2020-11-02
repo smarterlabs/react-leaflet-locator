@@ -47,7 +47,8 @@ export default function MapLocator(props) {
 		sanityConfig,
 	} = props
 
-	const [locations] = useLocations(sanityConfig.projectId, sanityConfig.dataset)
+	// const [locations] = useLocations(sanityConfig.projectId, sanityConfig.dataset)
+	const locations = []
 	const { sanityImg, client } = useMemo(() => sanityClient(sanityConfig.projectId, sanityConfig.dataset), [])
 
 	const [mapIcons] = usePromise(client.fetch(/* groq */`*[_type == "mapIcon" && default == true]{

@@ -22,6 +22,7 @@ import FilterModal from './FilterModal'
 import DealerPane from './DealerPane'
 import sanityClient from './sanity-client'
 import useLocations from './hooks/useLocations'
+import usePromise from './hooks/usePromise'
 
 const icons = {}
 
@@ -42,16 +43,19 @@ export default function MapLocator(props) {
 		seo,
 		getOptions,
 		// locations,
-		defaultMapIcon,
+		// defaultMapIcon,
 		sanityConfig,
 	} = props
 
 	const [locations] = useLocations(sanityConfig.projectId, sanityConfig.dataset)
-	console.log(`Locations: `, locations)
+	const { sanityImg, client } = useMemo(() => sanityClient(sanityConfig.projectId, sanityConfig.dataset), [])
+
+	const [mapIcons] = usePromise(client.fetch(/* groq */`*[_type == "mapIcon" && default == true]`), null)
+	const defaultMapIcon = mapIcons?.[0]
+	console.log(`Locations: `, defaultMapIcon)
 
 	return <div>test</div>
 
-	const { sanityImg } = useMemo(() => sanityClient(sanityConfig.projectId, sanityConfig.dataset), [])
 
 	useEffect(() => {
 		if(getOptions){

@@ -154,7 +154,7 @@ const global = props => css`
   body {
     margin: 0;
     height: 100%;
-    overflow: hidden;
+    /* overflow: hidden; */
   }
 	@media(min-width: ${props.breakpoint}){
 		body: {

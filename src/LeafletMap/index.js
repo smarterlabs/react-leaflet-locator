@@ -50,7 +50,11 @@ export default function MapLocator(props) {
 	const [locations] = useLocations(sanityConfig.projectId, sanityConfig.dataset)
 	const { sanityImg, client } = useMemo(() => sanityClient(sanityConfig.projectId, sanityConfig.dataset), [])
 
-	const [mapIcons] = usePromise(client.fetch(/* groq */`*[_type == "mapIcon" && default == true]`), null)
+	const [mapIcons] = usePromise(client.fetch(/* groq */`*[_type == "mapIcon" && default == true]{
+		...,
+		icon { ..., asset-> },
+		domains[]-> { ..., icon { ..., asset-> } }
+	}`), null)
 	const defaultMapIcon = mapIcons?.[0]
 	console.log(`Locations: `, defaultMapIcon)
 	console.log(`Default map icon: `, defaultMapIcon)

@@ -59,7 +59,8 @@ export default function MapLocator(props) {
 	const defaultMapIcon = mapIcons?.[0]
 
 
-	console.log(`Locations: `, locations),
+	console.log(`Locations: `, locations)
+	console.log(`locations: `, JSON.stringify(locations, null, 3))
 	console.log(`Map Icons: `, mapIcons)
 
 	useEffect(() => {

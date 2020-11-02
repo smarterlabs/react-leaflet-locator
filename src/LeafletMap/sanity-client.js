@@ -1,8 +1,10 @@
 import sanityClient from '@sanity/client'
 import imageUrlBuilder from '@sanity/image-url'
 
+import { sanityConfig } from './config'
+const { projectId, dataset } = sanityConfig
 
-export default function SanityClient(projectId = ``, dataset = ``) {
+export default function SanityClient() {
   const client = sanityClient({
     projectId,
     dataset,

@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react'
 
 import sanityClient from '../sanity-client'
 
+import { sanityConfig } from '../config'
+const { projectId, dataset } = sanityConfig
 
-
-export default function FetchLocations(projectId, dataset){
+export default function FetchLocations(){
   const { client } = sanityClient(projectId, dataset)
 
   const [locations, setLocations] = useState([])

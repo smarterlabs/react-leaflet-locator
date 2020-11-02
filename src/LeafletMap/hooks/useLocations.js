@@ -10,8 +10,9 @@ export default function FetchLocations(projectId, dataset){
   const [locations, setLocations] = useState([])
 
   useEffect(() => {
+    let isSubscribed = true
+
     if(typeof window !== `undefined`){
-      let isSubscribed = true
       const domain = document.location.hostname
       const getLocations = async () => {
         try {
@@ -77,8 +78,8 @@ export default function FetchLocations(projectId, dataset){
       }
       
       getLocations()
-      return () => isSubscribed(false)
     }
+    return () => (isSubscribed = false)
   }, [])
 
   return [locations, setLocations]

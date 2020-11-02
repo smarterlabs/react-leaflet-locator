@@ -24,18 +24,18 @@ export default function FilterModal(props){
 			const { productAvailabilityList, amenitiesList } = cur
 
 			const productFilters = [
-				...acc.products || [],
-				...productAvailabilityList.filter(({ slug }) => {
+				...acc?.products || [],
+				...productAvailabilityList?.filter(({ slug }) => {
 					return (acc.products || [])
 						.findIndex(p => p?.slug?.current === slug?.current) === -1
-				}),
+				}) || [],
 			]
 			const amenitiesFilters = [
 				...acc?.amenities || [],
-				...amenitiesList.filter(({ slug }) => {
+				...amenitiesList?.filter(({ slug }) => {
 					return (acc.amenities || [])
 						.findIndex(a => a?.slug?.current === slug?.current) === -1
-				}),
+				}) || [],
 			]
   
 			return {

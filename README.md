@@ -12,7 +12,7 @@ Injection is using the `build-scripts` command. It is using the inject script in
   <body>
     <div data-locator-container></div> <!-- This must have the data attribute 'data-locator-container'. This is where the map will be injected. -->
   </body>
- <script type="text/javascript" src="./bundle.js"></script>
+ <script type="text/javascript" src="https://map-inject.netlify.app/bundle.js"></script>
   <script>
     const MapInject = window.MapInject
     new MapInject()

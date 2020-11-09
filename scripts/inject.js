@@ -17,7 +17,7 @@ function queryRender(query, component) {
   }
 }
 
-class TestInject {
+class MapInject {
   constructor(props) {
     this.inject(props)
   }
@@ -26,7 +26,7 @@ class TestInject {
   }
 }
 
-window.TestInject = TestInject
+window.TestInject = MapInject
 
 
 

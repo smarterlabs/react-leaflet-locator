@@ -34,7 +34,7 @@
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject",
-    "copy-html": "cp -R map.html dist/test.map",
+    "copy-html": "cp -R map.html dist/map.map",
     "build-scripts": "webpack --config webpack.config.js && npm run copy-html"
   },
   "husky": {

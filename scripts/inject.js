@@ -26,7 +26,7 @@ class MapInject {
   }
 }
 
-window.TestInject = MapInject
+window.MapInject = MapInject
 
 
 

@@ -66,13 +66,18 @@ export default function FetchLocations(){
               }
             }
           }`
-          const locationParams = { domainId: domainData?.[0]?._id }
+          const domainId = domainData?.[0]?._id
+          if(!domainId){
+            throw Error(`"${domain}" is an invalid domain because it was not added to the domain list in sanity`)
+          }
+          const locationParams = { domainId }
           const locationData = await client.fetch(locationQuery, locationParams)
           if(isSubscribed) {
             setLocations(locationData)
           }
         } catch(error){
           if(isSubscribed) {
+            console.error(error)
             setLocations({ error })
           }
         }

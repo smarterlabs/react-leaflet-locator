@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable import/first */
 
 import React, { useState, useRef, useEffect, useMemo } from 'react'
 import { css, Global } from '@emotion/core'
@@ -276,6 +277,14 @@ export default function MapLocator(props) {
 	// const memoRender = 
 
 	const renderer = () => {
+		if(locations.error){
+			return (
+				<section>
+					<div>Could not load any locations...</div>
+					<div>{locations.error?.message}</div>
+				</section>
+			)
+		}
 		if(!LeafletMap || !locations?.length) {
 			return (
 				<div 

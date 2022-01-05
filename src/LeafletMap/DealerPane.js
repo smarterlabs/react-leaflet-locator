@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable import/first */
 
 import React, { useContext, useEffect } from 'react'
 import { css, Global } from '@emotion/core'

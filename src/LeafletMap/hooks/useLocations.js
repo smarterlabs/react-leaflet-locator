@@ -18,7 +18,8 @@ export default function FetchLocations(){
       const getLocations = async () => {
         try {
           const domainQuery = /* groq */`*[_type == "domain" && url match [$domain, $nakedDomain]]`
-          const domainParams = { nakedDomain: `*${domain.replace(`www.`, ``)}*`, domain }
+          const domainParams = { nakedDomain: `${domain.replace(`www.`, ``)}`, domain }
+          console.log(`Domain Params: `, domainParams)
           const domainData = await client.fetch(domainQuery, domainParams)
         
           const locationQuery = /* groq */`*[_type == "dealer" && domains[]._ref == $domainId]{

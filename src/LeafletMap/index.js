@@ -48,6 +48,8 @@ export default function MapLocator(props) {
 	} = props
 
 	const [locations] = useLocations()
+
+	console.log(`Locations: `, locations)
 	
 	const [mapIcons] = usePromise(client.fetch(/* groq */`*[_type == "mapIcon" && default == true]{
 		...,
@@ -88,7 +90,9 @@ export default function MapLocator(props) {
 	// const { allSanityDealer, defaultMapIcon } = useStaticQuery(query)
 
 	const defaultMapIconId = defaultMapIcon?.icon?.asset?._id
-	const defaultDomain = defaultMapIcon?.domains?.find(obj => obj.domain === domain)
+	const defaultDomain = defaultMapIcon?.domains?.find(obj => {
+		return obj.domain === domain.replace(`www.`, ``)  || obj.domain === domain
+	})
 	const defaultDomainIconId = defaultDomain?.icon?.asset?._id
 
 	// const locations = allSanityDealer?.nodes|| []
@@ -357,7 +361,9 @@ export default function MapLocator(props) {
 									} = cluster.properties
 
 									const mapIconId = mapIcon?.icon?.asset?._id 
-									const dealerDomain = mapIcon?.domains?.find(obj => obj.domain === domain)
+									const dealerDomain = mapIcon?.domains?.find(obj => {
+										return obj.domain === domain.replace(`www.`, ``)  || obj.domain === domain
+									})
 									const dealerDomainIconId = dealerDomain?.icon?.asset?._id
 									// we have a cluster to render
 									if(isCluster) {

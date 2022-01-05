@@ -14,11 +14,11 @@ export default function FetchLocations(){
     let isSubscribed = true
 
     if(typeof window !== `undefined`){
-      const domain = document.location.hostname
+      const domain = window.location.hostname
       const getLocations = async () => {
         try {
-          const domainQuery = /* groq */`*[_type == "domain" && url == $domain]`
-          const domainParams = { domain }
+          const domainQuery = /* groq */`*[_type == "domain" && url match [$domain, $nakedDomain]]`
+          const domainParams = { nakedDomain: `*${domain.replace(`www.`, ``)}*`, domain }
           const domainData = await client.fetch(domainQuery, domainParams)
         
           const locationQuery = /* groq */`*[_type == "dealer" && domains[]._ref == $domainId]{

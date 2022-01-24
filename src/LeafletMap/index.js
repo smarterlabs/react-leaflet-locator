@@ -344,7 +344,7 @@ export default function MapLocator(props) {
 							>
 								<TileLayer 
 									attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-									url='https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png'
+									url='https://tile.openstreetmap.org/{z}/{x}/{y}.png'
 								/>
 								{searched && clusters?.map?.((cluster, i) => {
 									const [longitude, latitude] = cluster.geometry.coordinates

@@ -30,6 +30,7 @@
     "use-supercluster": "^0.2.9"
   },
   "scripts": {
+    "dev": "yarn start",
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",

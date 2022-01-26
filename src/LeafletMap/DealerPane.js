@@ -274,7 +274,7 @@ const maxBannerHeight = `600px`
 const contentPadding = `20px`
 
 const styles = props => css`
-  z-index: 5000;
+  z-index: 12;
   position: absolute;
   top: 0;
   left: 0;

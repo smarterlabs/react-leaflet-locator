@@ -164,7 +164,7 @@ const global = props => css`
 `
 
 const styles = props => css`
-  z-index: 5000;
+  z-index: 12;
   position: absolute;
   top: 0;
   left: 0;

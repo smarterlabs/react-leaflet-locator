@@ -214,7 +214,7 @@ const styles = props => css`
 	align-items: center;
 	justify-content: center;
 	box-shadow: 0px 5px 3px #999;
-	z-index: 2000;
+	z-index: 11;
   position: relative;
 	padding: 15px;
 	.resultZip {

@@ -140,7 +140,7 @@ export default function Search(props){
 							setSearchInput(``)
 						}}
 						value={searchInput}
-						placeholder={`Enter your ZIP`} 
+						placeholder={`Enter your zip, city, or state`} 
 						className="desktopSearchInput"
 					/>
 					<input 
@@ -154,7 +154,7 @@ export default function Search(props){
 							setZip(``)
 						}}
 						value={zip}
-						placeholder={`Enter your ZIP`} 
+						placeholder={`Enter your zip, city, or state`} 
 						className="mobileSearchInput"
 					/>
 					<button type="submit"/>

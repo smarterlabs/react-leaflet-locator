@@ -78,7 +78,7 @@ export default function LocatorList(props) {
 				)
 				: (
 					<div className="noLocationsText">
-						Enter your zip above <br/>
+						Enter your zip, city, or state above <br/>
 						To find your pickup location
 					</div>
 				)

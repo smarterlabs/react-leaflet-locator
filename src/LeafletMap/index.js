@@ -296,7 +296,7 @@ export default function MapLocator(props) {
 						display: flex;
 						justify-content: center;
 						align-items: center;
-						height: calc(100vh - 87px);
+						height: calc(80vh - 87px);
 					`} 
 					className="locatorContainer">
 					<MoonLoader
@@ -574,7 +574,7 @@ const styles = props => css`
 		display: flex;
 		@media(min-width: ${props.breakpoint}) {
 			grid-area: map;
-			height: ${props?.desktop?.height || `100vh`};
+			height: ${props?.desktop?.height || `80vh`};
 		}
 	}
 `

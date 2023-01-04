@@ -37,7 +37,7 @@ export default function MapLocator(props) {
 		breakpoint = `1000px`,
 		mobile,
 		desktop,
-		zoom: initZoom = 20,
+		zoom: initZoom = 13,
 		mapMaxWidth = `1000px`,
 		disableFilters,
 		disableDealerPane,
@@ -262,7 +262,7 @@ export default function MapLocator(props) {
 				setSearched(true)
 
 				if(useCenter) {
-					leafletElement.setView(center, 10)
+					leafletElement.setView(center, 6)
 				} else {
 					leafletElement.fitBounds(bounds)
 				}

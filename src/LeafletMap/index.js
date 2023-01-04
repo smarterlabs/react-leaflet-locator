@@ -32,12 +32,12 @@ const { sanityImg, client } = sanityClient()
 export default function MapLocator(props) {
 	const { 
 		center = [40.2502757,-85.9485402],  
-		maxZoom = 30, 
+		maxZoom = 20, 
 		primaryColor = `#003CA6`,
 		breakpoint = `1000px`,
 		mobile,
 		desktop,
-		zoom: initZoom = 4,
+		zoom: initZoom = 10,
 		mapMaxWidth = `1000px`,
 		disableFilters,
 		disableDealerPane,

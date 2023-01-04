@@ -262,7 +262,7 @@ export default function MapLocator(props) {
 				setSearched(true)
 
 				if(useCenter) {
-					leafletElement.setView(center, 6)
+					leafletElement.setView(center, 8)
 				} else {
 					leafletElement.fitBounds(bounds)
 				}

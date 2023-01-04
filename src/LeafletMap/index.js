@@ -32,12 +32,12 @@ const { sanityImg, client } = sanityClient()
 export default function MapLocator(props) {
 	const { 
 		center = [40.2502757,-85.9485402],  
-		maxZoom = 20, 
+		maxZoom = 30, 
 		primaryColor = `#003CA6`,
 		breakpoint = `1000px`,
 		mobile,
 		desktop,
-		zoom: initZoom = 10,
+		zoom: initZoom = 20,
 		mapMaxWidth = `1000px`,
 		disableFilters,
 		disableDealerPane,
@@ -140,7 +140,7 @@ export default function MapLocator(props) {
 			])
 
 			// set zoom for clustering
-			setZoom(8)
+			setZoom(mapEl.current.leafletElement.getZoom())
 
 			// set visible locations for location list
 			const foundLocations = locations?.filter?.(m => {

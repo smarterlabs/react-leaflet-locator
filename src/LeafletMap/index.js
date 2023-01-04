@@ -140,7 +140,7 @@ export default function MapLocator(props) {
 			])
 
 			// set zoom for clustering
-			setZoom(mapEl.current.leafletElement.getZoom())
+			setZoom(8)
 
 			// set visible locations for location list
 			const foundLocations = locations?.filter?.(m => {

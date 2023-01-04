@@ -37,7 +37,7 @@ export default function MapLocator(props) {
 		breakpoint = `1000px`,
 		mobile,
 		desktop,
-		zoom: initZoom = 13,
+		zoom: initZoom = 10,
 		mapMaxWidth = `1000px`,
 		disableFilters,
 		disableDealerPane,

@@ -25,7 +25,7 @@ export default function LocatorList(props) {
 
 	return (
 		<div css={styles(globalStyles)} className="locatorListContainer">
-			{noDealers && <div className="noDealers">Sadly, there are no dealers in your area</div>}
+			{noDealers && <div className="noDealers">Sadly, there are no retail partners near you. Try zooming out to expand your search radius.</div>}
 			{locations.length 
 				? (
 					<ul className="locatorList">

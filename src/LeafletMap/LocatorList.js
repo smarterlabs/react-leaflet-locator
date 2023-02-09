@@ -5,7 +5,7 @@ import { FaMapMarkerAlt, FaPhone, FaInfoCircle } from 'react-icons/fa'
 import StyleContext from './context/StyleContext'
 
 export default function LocatorList(props) {
-	const { 
+	let { 
 		locations, 
 		currentLocation, 
 		curLocationIdx,
@@ -22,6 +22,14 @@ export default function LocatorList(props) {
 		: ``
 
 	if(loading) return <div>Loading...</div>	
+
+	if(locations.length){
+		locations = locations.sort((a, b) => {
+			if(a.distance < b.distance) return -1
+			if(a.distance > b.distance) return 1
+			return 0
+		})
+	}
 
 	return (
 		<div css={styles(globalStyles)} className="locatorListContainer">

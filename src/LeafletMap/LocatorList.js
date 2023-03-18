@@ -25,8 +25,10 @@ export default function LocatorList(props) {
 
 	if(locations.length){
 		locations = locations.sort((a, b) => {
-			if(a.distance < b.distance) return -1
-			if(a.distance > b.distance) return 1
+			const aDistance = Number(a.distance)
+			const bDistance = Number(b.distance)
+			if(aDistance < bDistance) return -1
+			if(aDistance > bDistance) return 1
 			return 0
 		})
 	}

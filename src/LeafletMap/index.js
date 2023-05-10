@@ -504,7 +504,7 @@ const styles = props => css`
 		calc(${props?.desktop?.height || `100vh`} - 30vh);
 	}
 	.leafletMap {
-		height: 60vh;
+		height: 40vh;
 		width: 100%;
 		.leaflet-control-container {
 			user-select: none;

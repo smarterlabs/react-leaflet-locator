@@ -436,10 +436,6 @@ export default function MapLocator(props) {
 								})}
 							</LeafletMap>
 						</div>
-						<CurrentLocation 
-							mapEl={mapEl} 
-							setCurrentLocation={setCurrentLocation} 
-						/>
 						<LocatorList 
 							locations={searched ? (filteredLocations || visibleLocations).slice(0, 20) : []} 
 							currentLocation={currentLocation}
@@ -447,6 +443,10 @@ export default function MapLocator(props) {
 							noDealers={searched ? (filteredLocations || visibleLocations).length < 1 : false}
 							onLocationSelect={onLocationSelect}
 							curLocationIdx={curLocationIdx}
+						/>
+						<CurrentLocation 
+							mapEl={mapEl} 
+							setCurrentLocation={setCurrentLocation} 
 						/>
 						{!disableFilters && <FilterModal 
 							active={searched && filterModal && !!visibleLocations.length}

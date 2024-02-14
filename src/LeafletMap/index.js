@@ -75,9 +75,30 @@ export default function MapLocator(props) {
 	const [zoom, setZoom] = useState(initZoom)
 
 	// map locations state
-	const [visibleLocations, setVisibleLocations] = useState([])
-	const [filteredLocations, setFilteredLocations] = useState(null)
-	const [curLocationIdx, setCurLocationIdx] = useState(null)
+	let [visibleLocations, setVisibleLocations] = useState([])
+	let [filteredLocations, setFilteredLocations] = useState(null)
+	let [curLocationIdx, setCurLocationIdx] = useState(null)
+
+	// sort
+
+	if(visibleLocations.length){
+		visibleLocations = visibleLocations.sort((a, b) => {
+			const aDistance = Number(a.distance)
+			const bDistance = Number(b.distance)
+			if(aDistance < bDistance) return -1
+			if(aDistance > bDistance) return 1
+			return 0
+		})
+	}
+	if(filteredLocations.length){
+		filteredLocations = filteredLocations.sort((a, b) => {
+			const aDistance = Number(a.distance)
+			const bDistance = Number(b.distance)
+			if(aDistance < bDistance) return -1
+			if(aDistance > bDistance) return 1
+			return 0
+		})
+	}
 
 	// current location state
 	const [currentLocation, setCurrentLocation] = useState(null)

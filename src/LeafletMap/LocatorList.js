@@ -23,15 +23,15 @@ export default function LocatorList(props) {
 
 	if(loading) return <div>Loading...</div>	
 
-	if(locations.length){
-		locations = locations.sort((a, b) => {
-			const aDistance = Number(a.distance)
-			const bDistance = Number(b.distance)
-			if(aDistance < bDistance) return -1
-			if(aDistance > bDistance) return 1
-			return 0
-		})
-	}
+	// if(locations.length){
+	// 	locations = locations.sort((a, b) => {
+	// 		const aDistance = Number(a.distance)
+	// 		const bDistance = Number(b.distance)
+	// 		if(aDistance < bDistance) return -1
+	// 		if(aDistance > bDistance) return 1
+	// 		return 0
+	// 	})
+	// }
 
 	return (
 		<div css={styles(globalStyles)} className="locatorListContainer">

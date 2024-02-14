@@ -81,7 +81,7 @@ export default function MapLocator(props) {
 
 	// sort
 
-	if(visibleLocations.length){
+	if(visibleLocations && visibleLocations.length){
 		visibleLocations = visibleLocations.sort((a, b) => {
 			const aDistance = Number(a.distance)
 			const bDistance = Number(b.distance)
@@ -90,7 +90,7 @@ export default function MapLocator(props) {
 			return 0
 		})
 	}
-	if(filteredLocations.length){
+	if(filteredLocations && filteredLocations.length){
 		filteredLocations = filteredLocations.sort((a, b) => {
 			const aDistance = Number(a.distance)
 			const bDistance = Number(b.distance)

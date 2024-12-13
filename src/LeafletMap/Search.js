@@ -32,7 +32,7 @@ export default function Search(props){
 
 	const osmProvider = OpenStreetMapProvider && new OpenStreetMapProvider({
 		params: {
-			countrycodes: [`ca`,`us`], // limit search results to the Netherlands
+			// countrycodes: [`ca`,`us`],
 			addressdetails: 1, 
 			format: `json`,
 		},

@@ -107,6 +107,11 @@ export default function Search(props){
 	const handleSubmit = e => {
 		e.preventDefault()
 
+		window.dataLayer = window.dataLayer || []
+		dataLayer.push({
+			event: "dealer_search"
+		})
+
 		if(results?.[0]) {
 			submitSearch(results?.[0])
 			setResults(null)

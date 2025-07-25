@@ -58,7 +58,7 @@ export default function Search(props){
 		}, [])
 		setResults(filteredResults.slice(0, 10))
 		setSearching(false)
-	}, 250), [])
+	}, 750), [])
 
 	useEffect(() => {
 		if(ref?.current){
